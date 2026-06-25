@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="seen;new studio — 라이프스타일 큐레이션 플랫폼. Lighting, Components, and beyond.">
+  <meta name="description" content="seen;new studio — 라이프스타일 큐레이션 플랫폼">
   <title>seen;new studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,14 +21,19 @@
       --line-soft: rgba(43, 43, 43, 0.05);
       --ph: #f6f6f6;
       --nav-w: 280px;
-      --pad-y: 120px;
-      --pad-x: 10%;
+      --mobile-bar: 56px;
+      --pad-y: 80px;
+      --pad-x: 8%;
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --transition: 0.55s var(--ease);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
 
     body {
       font-family: 'Noto Sans KR', sans-serif;
@@ -43,10 +48,21 @@
 
     ::selection { background: var(--text); color: var(--white); }
 
-    a { color: inherit; text-decoration: none; transition: opacity 0.35s ease; }
-    a:hover { opacity: 0.72; }
+    a, button.nav-trigger {
+      color: inherit;
+      text-decoration: none;
+      transition: opacity 0.35s ease, color 0.35s ease;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font: inherit;
+      text-align: left;
+      padding: 0;
+    }
 
-    /* ── Brand CI: seen;new studio ── */
+    a:hover, button.nav-trigger:hover { opacity: 0.72; }
+
+    /* ── Brand ── */
     .brand-logo {
       display: block;
       font-family: 'Spoqa Han Sans Neo', 'Noto Sans KR', sans-serif;
@@ -59,12 +75,10 @@
     }
 
     .brand-logo:hover { opacity: 1; }
-
     .brand-logo__line { display: block; white-space: nowrap; }
 
     .brand-semi {
       font-weight: 200;
-      font-style: normal;
       letter-spacing: 0.12em;
       opacity: 0.72;
       margin: 0 0.04em;
@@ -73,23 +87,79 @@
     .brand-logo--sidebar .brand-logo__line { font-size: 15px; }
     .brand-logo--sidebar .brand-logo__studio { margin-top: 2px; letter-spacing: 0.28em; }
 
-    .brand-logo--hero { margin-bottom: 48px; }
-    .brand-logo--hero .brand-logo__line { font-size: clamp(32px, 6vw, 64px); letter-spacing: 0.04em; }
-    .brand-logo--hero .brand-logo__studio { letter-spacing: 0.42em; font-size: clamp(32px, 6vw, 64px); }
-
-    .brand-logo--foot .brand-logo__line { font-size: 14px; display: inline; letter-spacing: 0.08em; }
-    .brand-logo--foot .brand-logo__studio { display: inline; letter-spacing: 0.22em; margin-left: 0.35em; }
+    .brand-logo--hero { margin-bottom: 40px; }
+    .brand-logo--hero .brand-logo__line,
+    .brand-logo--hero .brand-logo__studio {
+      font-size: clamp(28px, 5vw, 56px);
+      letter-spacing: 0.04em;
+    }
+    .brand-logo--hero .brand-logo__studio { letter-spacing: 0.38em; }
 
     .logo-sub {
       margin-top: 14px;
       font-size: 9px;
-      font-weight: 400;
       letter-spacing: 0.32em;
       text-transform: uppercase;
       color: var(--text-light);
     }
 
-    /* ── Sidebar Navigation ── */
+    /* ── Mobile top bar ── */
+    .mobile-bar {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--mobile-bar);
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+      z-index: 350;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    .mobile-bar .brand-logo { font-size: 13px; }
+    .mobile-bar .brand-logo__line { display: inline; }
+    .mobile-bar .brand-logo__studio { display: inline; margin-left: 0.3em; letter-spacing: 0.2em; }
+
+    .burger {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      background: var(--white);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .burger span {
+      width: 16px;
+      height: 1px;
+      background: var(--text);
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+
+    .burger.on span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .burger.on span:nth-child(2) { opacity: 0; }
+    .burger.on span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .veil {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(4px);
+      z-index: 250;
+    }
+
+    .veil.on { display: block; }
+
+    /* ── Sidebar ── */
     .sidebar {
       position: fixed;
       top: 0;
@@ -98,7 +168,7 @@
       height: 100vh;
       background: var(--white);
       border-right: 1px solid var(--line);
-      padding: 72px 44px 52px;
+      padding: 72px 44px 48px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -106,192 +176,208 @@
       overflow-y: auto;
     }
 
-    .nav-block { margin-bottom: 44px; }
+    .nav-block { margin-bottom: 40px; }
 
     .nav-label {
       font-size: 9px;
-      font-weight: 400;
       letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--text-light);
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
-    .nav-label--editorial {
-      color: var(--text-mid);
-      font-weight: 500;
-    }
+    .nav-label--editorial { color: var(--text-mid); font-weight: 500; }
 
     .nav-list { list-style: none; }
+    .nav-list li { margin-bottom: 10px; }
 
-    .nav-list li { margin-bottom: 12px; }
-
-    .nav-list a {
+    .nav-list .nav-trigger {
       font-size: 11px;
-      font-weight: 400;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--text-body);
-      transition: color 0.35s ease, opacity 0.35s ease;
+      display: block;
+      width: 100%;
     }
 
-    .nav-list a:hover,
-    .nav-list a.active { color: var(--text); opacity: 1; font-weight: 500; }
-
-    .nav-list a.is-active-cat {
+    .nav-list .nav-trigger.active {
       color: var(--text);
       font-weight: 500;
+      opacity: 1;
     }
 
-    .nav-list .nav-sub {
-      padding-left: 20px;
-      margin-top: 10px;
-    }
+    .nav-sub { list-style: none; padding-left: 18px; margin-top: 8px; }
 
-    .nav-list .nav-sub a {
+    .nav-sub .nav-trigger {
       font-size: 10px;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: lowercase;
       color: var(--text-light);
     }
 
-    .nav-list .nav-sub a:hover { color: var(--text-body); }
+    .nav-sub .nav-trigger.active { color: var(--text); font-weight: 500; }
 
     .nav-future {
       color: var(--text-future) !important;
       pointer-events: none;
       cursor: default;
-      font-weight: 400 !important;
     }
 
     .nav-future .soon {
       display: block;
       font-size: 8px;
-      letter-spacing: 0.24em;
+      letter-spacing: 0.22em;
       margin-top: 2px;
       text-transform: uppercase;
     }
 
     .sidebar-meta {
-      padding-top: 36px;
+      padding-top: 32px;
       border-top: 1px solid var(--line);
       font-size: 10px;
-      letter-spacing: 0.04em;
       color: var(--text-light);
-      line-height: 2.2;
+      line-height: 2.1;
     }
 
     .sidebar-meta a {
       display: inline-block;
-      margin-top: 14px;
-      margin-right: 16px;
+      margin-top: 12px;
+      margin-right: 14px;
       font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--text-light);
     }
 
-    /* ── Canvas ── */
-    .canvas {
+    /* ── App viewport (section router) ── */
+    .app-main {
       margin-left: var(--nav-w);
-      min-height: 100vh;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
     }
 
-    .section {
+    .page {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      transform: translateY(16px);
+      transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
+    }
+
+    .page.is-active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+      z-index: 10;
+    }
+
+    .page.is-leaving {
+      opacity: 0;
+      transform: translateY(-10px);
+      z-index: 5;
+    }
+
+    .page-inner {
+      min-height: 100%;
       padding: var(--pad-y) var(--pad-x);
+      padding-bottom: calc(var(--pad-y) + 24px);
     }
 
-    .section + .section { border-top: 1px solid var(--line-soft); }
-
+    /* ── Typography ── */
     .eyebrow {
       font-size: 10px;
       font-weight: 500;
       letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--text-light);
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
 
     .display {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 300;
-      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+      font-size: clamp(2.2rem, 4vw, 3.6rem);
       letter-spacing: 0.06em;
       line-height: 1.12;
       color: var(--text);
-      margin-bottom: 36px;
+      margin-bottom: 32px;
     }
 
-    .display em {
-      font-style: italic;
-      font-weight: 300;
-    }
+    .display em { font-style: italic; font-weight: 300; }
 
     .lede {
-      max-width: 420px;
+      max-width: 440px;
       color: var(--text-body);
-      line-height: 2.1;
-      margin-bottom: 64px;
+      line-height: 2.05;
+      margin-bottom: 48px;
     }
 
     .lede--wide { max-width: 520px; }
 
-    /* ── Hero: Magazine Spread ── */
-    .hero {
-      min-height: 100vh;
-      padding: var(--pad-y) var(--pad-x);
+    /* ── Hero (Home page) ── */
+    .hero-grid {
       display: grid;
-      grid-template-columns: 0.85fr 1.15fr;
+      grid-template-columns: 0.9fr 1.1fr;
       gap: 8%;
       align-items: center;
+      min-height: calc(100vh - var(--pad-y) * 2);
     }
-
-    .hero-copy { padding-right: 4%; }
 
     .hero-statement {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 300;
-      font-size: clamp(1.5rem, 2.8vw, 2.2rem);
-      letter-spacing: 0.04em;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
       line-height: 1.45;
       color: var(--text-mid);
-      margin-bottom: 56px;
-      max-width: 380px;
+      margin-bottom: 40px;
+      max-width: 360px;
     }
 
     .hero-desc {
-      max-width: 360px;
+      max-width: 340px;
       color: var(--text-body);
-      line-height: 2.15;
-      margin-bottom: 48px;
+      line-height: 2.1;
+      margin-bottom: 40px;
     }
 
-    .hero-scroll {
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+    }
+
+    .btn-ghost {
       font-size: 9px;
-      letter-spacing: 0.32em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: var(--text-light);
+      border: 1px solid var(--line);
+      padding: 14px 28px;
+      background: none;
+      cursor: pointer;
+      color: var(--text);
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
-    .hero-visual {
-      position: relative;
-    }
+    .btn-ghost:hover { background: var(--text); color: var(--white); opacity: 1; }
 
     .hero-visual .frame {
       aspect-ratio: 4 / 5;
-      max-height: 82vh;
+      max-height: min(78vh, 720px);
     }
 
     .hero-caption {
-      position: absolute;
-      bottom: -48px;
-      left: 0;
-      max-width: 280px;
+      margin-top: 24px;
+      max-width: 300px;
       font-size: 11px;
       color: var(--text-light);
-      line-height: 1.9;
-      letter-spacing: 0.04em;
+      line-height: 1.85;
     }
 
     /* ── Frames ── */
@@ -311,22 +397,22 @@
 
     .frame-tag {
       position: absolute;
-      bottom: 28px;
-      left: 32px;
+      bottom: 24px;
+      left: 28px;
       font-size: 9px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--text-light);
     }
 
-    .ratio-port  { aspect-ratio: 3 / 4; }
-    .ratio-land  { aspect-ratio: 16 / 10; }
-    .ratio-wide  { aspect-ratio: 16 / 9; }
-    .ratio-tall  { aspect-ratio: 4 / 5; }
-    .ratio-sq    { aspect-ratio: 1 / 1; }
+    .ratio-port   { aspect-ratio: 3 / 4; }
+    .ratio-land   { aspect-ratio: 16 / 10; }
+    .ratio-wide   { aspect-ratio: 16 / 9; }
+    .ratio-tall   { aspect-ratio: 4 / 5; }
+    .ratio-sq     { aspect-ratio: 1 / 1; }
     .ratio-cinema { aspect-ratio: 21 / 9; }
 
-    /* ── Asymmetric Editorial Grid ── */
+    /* ── Magazine grids (PC) ── */
     .spread {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
@@ -334,118 +420,119 @@
       align-items: start;
     }
 
+    .col-4  { grid-column: span 4; }
     .col-5  { grid-column: span 5; }
     .col-6  { grid-column: span 6; }
     .col-7  { grid-column: span 7; }
     .col-8  { grid-column: span 8; }
-    .col-12 { grid-column: span 12; }
     .offset-1 { grid-column-start: 2; }
-    .offset-2 { grid-column-start: 3; }
 
-    .spread-gap { margin-top: 96px; }
+    .spread-gap { margin-top: 72px; }
 
-    .editorial-card {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .editorial-card .frame { margin-bottom: 28px; }
+    .editorial-card .frame { margin-bottom: 24px; }
 
     .card-cat {
       font-size: 9px;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.26em;
       text-transform: uppercase;
       color: var(--text-light);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .card-title {
       font-family: 'Cormorant Garamond', serif;
-      font-weight: 400;
-      font-size: 1.5rem;
-      letter-spacing: 0.08em;
-      margin-bottom: 10px;
-      color: var(--text);
+      font-size: 1.45rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
     }
 
     .card-desc {
       font-size: 12px;
       color: var(--text-body);
-      line-height: 1.95;
-      max-width: 320px;
+      line-height: 1.9;
+      max-width: 300px;
     }
 
-    .card-meta {
-      margin-top: 14px;
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      color: var(--text-light);
-    }
+    .card-meta { margin-top: 12px; font-size: 10px; color: var(--text-light); }
 
-    /* ── Category Sections ── */
     .cat-header {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10%;
-      margin-bottom: 96px;
+      gap: 8%;
+      margin-bottom: 64px;
       align-items: end;
     }
 
     .cat-header .display { margin-bottom: 0; }
+    .cat-intro { color: var(--text-body); line-height: 2; max-width: 380px; justify-self: end; }
 
-    .cat-intro {
-      color: var(--text-body);
-      line-height: 2.1;
-      max-width: 400px;
-      justify-self: end;
+    /* Sub-panel tabs (Lighting / Components) */
+    .sub-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 32px;
+      margin-bottom: 48px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--line-soft);
     }
 
-    .sub-cat {
-      margin-bottom: 112px;
-      scroll-margin-top: 64px;
+    .sub-tab {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+      transition: color 0.35s ease;
     }
 
-    .sub-cat:last-child { margin-bottom: 0; }
+    .sub-tab:hover { color: var(--text-body); opacity: 1; }
+    .sub-tab.active { color: var(--text); font-weight: 500; }
+
+    .sub-panel {
+      display: none;
+      animation: panelIn 0.5s var(--ease) forwards;
+    }
+
+    .sub-panel.is-visible { display: block; }
+
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
     .sub-cat-head {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
-      gap: 32px;
-      margin-bottom: 56px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--line-soft);
+      gap: 24px;
+      margin-bottom: 40px;
     }
 
     .sub-cat-head h3 {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 300;
-      font-size: 1.85rem;
-      letter-spacing: 0.1em;
+      font-size: 1.65rem;
+      letter-spacing: 0.08em;
     }
 
     .sub-cat-head p {
       font-size: 10px;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.14em;
       color: var(--text-light);
       text-align: right;
-      max-width: 240px;
     }
 
-    /* Curated index — not mall grid */
     .curated-index {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
-      gap: 40px 28px;
+      gap: 36px 24px;
     }
 
-    .curated-item {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .curated-item .frame { margin-bottom: 22px; }
-
+    .curated-item .frame { margin-bottom: 18px; }
     .curated-item--feature { grid-column: span 7; }
     .curated-item--side   { grid-column: span 5; }
     .curated-item--third  { grid-column: span 4; }
@@ -453,81 +540,24 @@
 
     .item-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
-      letter-spacing: 0.06em;
-      margin-bottom: 6px;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
     }
 
     .item-code {
       font-size: 9px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
       color: var(--text-light);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
-    .item-note {
-      font-size: 11px;
-      color: var(--text-body);
-      line-height: 1.85;
-    }
-
-    /* ── Platform Vision (Future Categories) ── */
-    .platform-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--line);
-      border: 1px solid var(--line);
-      margin-top: 72px;
-    }
-
-    .platform-cell {
-      background: var(--white);
-      padding: 56px 40px;
-      min-height: 220px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .platform-cell.is-live .platform-name { color: var(--text); }
-
-    .platform-cell.is-future .platform-name { color: var(--text-future); }
-    .platform-cell.is-future .platform-desc { color: #d4d4d4; }
-
-    .platform-name {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-
-    .platform-desc {
-      font-size: 12px;
-      color: var(--text-body);
-      line-height: 1.9;
-    }
-
-    .platform-status {
-      font-size: 8px;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      color: var(--text-light);
-      margin-top: 24px;
-    }
-
-    .platform-cell.is-future .platform-status { color: var(--text-future); }
-
-    /* ── Editorial / Curation ── */
-    .editorial-manifesto {
-      max-width: 640px;
-    }
+    .item-note { font-size: 11px; color: var(--text-body); line-height: 1.8; }
 
     .editorial-manifesto p {
       color: var(--text-body);
-      line-height: 2.2;
-      margin-bottom: 32px;
+      line-height: 2.15;
+      margin-bottom: 24px;
       font-size: 15px;
     }
 
@@ -535,128 +565,145 @@
       font-family: 'Cormorant Garamond', serif;
       font-weight: 300;
       font-style: italic;
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
       line-height: 1.4;
       color: var(--text-mid);
-      margin: 72px 0;
-      padding-left: 32px;
+      margin: 56px 0;
+      padding-left: 28px;
       border-left: 1px solid var(--line);
-      max-width: 560px;
+      max-width: 520px;
     }
 
-    /* ── Spaces (Projects) ── */
-    .spaces-list {
-      border-top: 1px solid var(--line);
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      margin-top: 56px;
     }
+
+    .platform-cell {
+      background: var(--white);
+      padding: 48px 36px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .platform-cell.is-live .platform-name { color: var(--text); }
+    .platform-cell.is-future .platform-name { color: var(--text-future); }
+    .platform-cell.is-future .platform-desc { color: #d4d4d4; }
+
+    .platform-name {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .platform-desc { font-size: 12px; color: var(--text-body); line-height: 1.85; }
+
+    .platform-status {
+      font-size: 8px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-top: 20px;
+    }
+
+    .platform-cell.is-future .platform-status { color: var(--text-future); }
+
+    .spaces-list { border-top: 1px solid var(--line); }
 
     .space-row {
       display: grid;
-      grid-template-columns: 120px 140px 1fr;
-      gap: 48px;
-      padding: 28px 0;
+      grid-template-columns: 100px 120px 1fr;
+      gap: 40px;
+      padding: 24px 0;
       border-bottom: 1px solid var(--line-soft);
       align-items: baseline;
     }
 
     .space-type {
       font-size: 9px;
-      letter-spacing: 0.24em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--text-light);
     }
 
-    .space-year {
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      color: var(--text-light);
-    }
-
-    .space-title {
-      color: var(--text-body);
-      letter-spacing: 0.04em;
-    }
+    .space-year { font-size: 11px; color: var(--text-light); }
+    .space-title { color: var(--text-body); }
 
     .partners {
       display: flex;
       flex-wrap: wrap;
-      gap: 16px 40px;
-      margin-top: 72px;
-      padding-top: 48px;
+      gap: 14px 36px;
+      margin-top: 56px;
+      padding-top: 40px;
       border-top: 1px solid var(--line-soft);
     }
 
-    .partners span {
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      color: var(--text-light);
-    }
+    .partners span { font-size: 10px; letter-spacing: 0.12em; color: var(--text-light); }
 
-    /* ── Studio / About ── */
     .studio-split {
       display: grid;
-      grid-template-columns: 42% 1fr;
-      gap: 12%;
+      grid-template-columns: 40% 1fr;
+      gap: 10%;
       align-items: start;
     }
 
-    .prose p {
-      color: var(--text-body);
-      line-height: 2.15;
-      margin-bottom: 28px;
-    }
+    .prose p { color: var(--text-body); line-height: 2.1; margin-bottom: 24px; }
 
-    .meta-table { margin-top: 56px; border-top: 1px solid var(--line); }
+    .meta-table { margin-top: 48px; border-top: 1px solid var(--line); }
 
     .meta-row {
       display: grid;
-      grid-template-columns: 96px 1fr;
-      gap: 28px;
-      padding: 20px 0;
+      grid-template-columns: 88px 1fr;
+      gap: 24px;
+      padding: 18px 0;
       border-bottom: 1px solid var(--line-soft);
       font-size: 12px;
     }
 
     .meta-row dt {
       font-size: 9px;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--text-light);
     }
 
     .meta-row dd { color: var(--text-body); }
 
-    /* ── Contact ── */
     .contact-split {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12%;
+      gap: 10%;
     }
 
-    .contact-block { margin-bottom: 40px; }
+    .contact-block { margin-bottom: 36px; }
 
     .contact-block .lbl {
-      font-size: 9px;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      color: var(--text-light);
-      margin-bottom: 14px;
-    }
-
-    .contact-block p {
-      color: var(--text-body);
-      line-height: 2.2;
-      letter-spacing: 0.04em;
-    }
-
-    .field { margin-bottom: 32px; }
-
-    .field label {
-      display: block;
       font-size: 9px;
       letter-spacing: 0.24em;
       text-transform: uppercase;
       color: var(--text-light);
       margin-bottom: 12px;
+    }
+
+    .contact-block p { color: var(--text-body); line-height: 2.1; }
+
+    .field { margin-bottom: 28px; }
+
+    .field label {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 10px;
     }
 
     .field input,
@@ -666,9 +713,9 @@
       border-bottom: 1px solid var(--line);
       background: transparent;
       font-family: inherit;
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text);
-      padding: 12px 0;
+      padding: 10px 0;
       outline: none;
       resize: none;
     }
@@ -677,13 +724,13 @@
     .field textarea:focus { border-color: var(--text); }
 
     .submit {
-      margin-top: 20px;
+      margin-top: 16px;
       background: none;
       border: 1px solid var(--text);
-      padding: 16px 48px;
+      padding: 14px 40px;
       font-family: inherit;
       font-size: 9px;
-      letter-spacing: 0.32em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--text);
       cursor: pointer;
@@ -692,114 +739,139 @@
 
     .submit:hover { background: var(--text); color: var(--white); opacity: 1; }
 
-    /* ── Footer ── */
-    .site-foot {
-      margin-left: var(--nav-w);
-      padding: 56px var(--pad-x);
-      border-top: 1px solid var(--line);
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 32px;
+    .page-credit {
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line-soft);
       font-size: 10px;
-      letter-spacing: 0.08em;
       color: var(--text-light);
+      letter-spacing: 0.06em;
     }
 
-    .foot-nav { display: flex; gap: 28px; }
-    .foot-nav a { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; }
+    /* ══════════════════════════════════════
+       PC — 1024px+
+       ══════════════════════════════════════ */
+    @media (min-width: 1024px) {
+      :root {
+        --pad-y: 100px;
+        --pad-x: 10%;
+      }
 
-    /* ── Mobile ── */
-    .burger {
-      display: none;
-      position: fixed;
-      top: 24px;
-      left: 24px;
-      z-index: 400;
-      width: 44px;
-      height: 44px;
-      border: 1px solid var(--line);
-      background: var(--white);
-      cursor: pointer;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
+      body { font-size: 14px; }
+
+      .hero-grid { min-height: calc(100vh - 200px); }
+
+      .editorial-card.col-5.offset-push { padding-top: 72px; }
     }
 
-    .burger span {
-      width: 18px;
-      height: 1px;
-      background: var(--text);
-      transition: transform 0.35s ease, opacity 0.35s ease;
-    }
+    /* ══════════════════════════════════════
+       Mobile / Tablet — 1023px-
+       ══════════════════════════════════════ */
+    @media (max-width: 1023px) {
+      :root {
+        --pad-y: 48px;
+        --pad-x: 6%;
+        --nav-w: 0px;
+      }
 
-    .burger.on span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .burger.on span:nth-child(2) { opacity: 0; }
-    .burger.on span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+      body { font-size: 16px; line-height: 1.85; }
 
-    .veil {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(255,255,255,0.75);
-      backdrop-filter: blur(4px);
-      z-index: 250;
-    }
+      .mobile-bar { display: flex; }
 
-    .veil.on { display: block; }
-
-    @media (max-width: 1100px) {
-      .hero { grid-template-columns: 1fr; gap: 64px; }
-      .hero-visual .frame { max-height: 60vh; aspect-ratio: 16 / 10; }
-      .hero-caption { position: static; margin-top: 24px; }
-      .cat-header { grid-template-columns: 1fr; gap: 32px; }
-      .cat-intro { justify-self: start; }
-      .platform-grid { grid-template-columns: 1fr; }
-      .curated-item--feature,
-      .curated-item--side,
-      .curated-item--third,
-      .curated-item--half { grid-column: span 12; }
-      .col-5, .col-6, .col-7, .col-8 { grid-column: span 12; }
-      .offset-1, .offset-2 { grid-column-start: auto; }
-      .studio-split, .contact-split { grid-template-columns: 1fr; }
-      .space-row { grid-template-columns: 1fr; gap: 8px; }
-    }
-
-    @media (max-width: 720px) {
-      :root { --pad-y: 80px; --pad-x: 6%; --nav-w: 0px; }
-      .burger { display: flex; }
       .sidebar {
         transform: translateX(-100%);
         transition: transform 0.45s var(--ease);
-        width: 280px;
+        width: min(300px, 88vw);
+        padding-top: calc(var(--mobile-bar) + 32px);
       }
+
       .sidebar.open { transform: none; }
-      .canvas, .site-foot { margin-left: 0; }
+
+      .app-main {
+        margin-left: 0;
+        padding-top: var(--mobile-bar);
+        height: calc(100vh - var(--mobile-bar));
+        height: calc(100dvh - var(--mobile-bar));
+      }
+
+      .display { font-size: clamp(2rem, 8vw, 2.6rem); margin-bottom: 24px; }
+      .lede, .lede--wide { max-width: 100%; margin-bottom: 36px; }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        min-height: auto;
+      }
+
+      .hero-statement { max-width: 100%; font-size: 1.35rem; margin-bottom: 28px; }
+      .hero-desc { max-width: 100%; font-size: 16px; }
+      .hero-visual .frame { max-height: 52vh; aspect-ratio: 4 / 3; }
+
+      .cat-header { grid-template-columns: 1fr; gap: 20px; }
+      .cat-intro { justify-self: start; font-size: 16px; }
+
+      .spread,
+      .curated-index { grid-template-columns: 1fr; gap: 32px; }
+
+      .col-4, .col-5, .col-6, .col-7, .col-8,
+      .curated-item--feature, .curated-item--side,
+      .curated-item--third, .curated-item--half { grid-column: span 1; }
+
+      .offset-1 { grid-column-start: auto; }
+      .editorial-card.col-5.offset-push { padding-top: 0; }
+
+      .platform-grid { grid-template-columns: 1fr; }
+      .studio-split, .contact-split { grid-template-columns: 1fr; gap: 40px; }
+
+      .space-row { grid-template-columns: 1fr; gap: 6px; padding: 20px 0; }
+
+      .sub-tabs { gap: 8px 20px; }
+      .sub-tab { font-size: 11px; }
+
+      .item-note, .card-desc, .editorial-manifesto p { font-size: 15px; }
+
+      .field input, .field textarea { font-size: 16px; }
+
+      .btn-ghost { padding: 16px 24px; font-size: 10px; }
     }
   </style>
 </head>
 <body>
 
-<button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+<header class="mobile-bar">
+  <button class="burger" id="burger" aria-label="메뉴"><span></span><span></span><span></span></button>
+  <button type="button" class="brand-logo nav-trigger" data-page="home">
+    <span class="brand-logo__line">seen<span class="brand-semi">;</span>new</span>
+    <span class="brand-logo__studio">studio</span>
+  </button>
+  <div style="width:40px;"></div>
+</header>
+
 <div class="veil" id="veil"></div>
 
 <aside class="sidebar" id="sidebar">
   <div>
     <div class="brand-header">
-      <a href="#home" class="brand-logo brand-logo--sidebar">
+      <button type="button" class="brand-logo brand-logo--sidebar nav-trigger" data-page="home">
         <span class="brand-logo__line">seen<span class="brand-semi">;</span>new</span>
         <span class="brand-logo__line brand-logo__studio">studio</span>
-      </a>
+      </button>
       <div class="logo-sub">Lifestyle Curation</div>
     </div>
 
     <nav class="nav-block">
+      <p class="nav-label">Home</p>
+      <ul class="nav-list">
+        <li><button type="button" class="nav-trigger active" data-page="home">Main</button></li>
+      </ul>
+    </nav>
+
+    <nav class="nav-block">
       <p class="nav-label nav-label--editorial">Editorial</p>
       <ul class="nav-list">
-        <li><a href="#editorial" data-nav>Curation</a></li>
-        <li><a href="#spaces" data-nav>Spaces</a></li>
-        <li><a href="#studio" data-nav>Studio</a></li>
+        <li><button type="button" class="nav-trigger" data-page="editorial">Curation</button></li>
+        <li><button type="button" class="nav-trigger" data-page="spaces">Spaces</button></li>
+        <li><button type="button" class="nav-trigger" data-page="studio">Studio</button></li>
       </ul>
     </nav>
 
@@ -807,30 +879,30 @@
       <p class="nav-label">Categories</p>
       <ul class="nav-list">
         <li>
-          <a href="#lighting" class="is-active-cat" data-nav>Lighting</a>
+          <button type="button" class="nav-trigger" data-page="lighting" data-sub="wall">Lighting</button>
           <ul class="nav-sub">
-            <li><a href="#wall" data-nav>wall</a></li>
-            <li><a href="#bar" data-nav>line bar</a></li>
-            <li><a href="#portable" data-nav>portable</a></li>
-            <li><a href="#down" data-nav>down light</a></li>
+            <li><button type="button" class="nav-trigger" data-page="lighting" data-sub="wall">wall</button></li>
+            <li><button type="button" class="nav-trigger" data-page="lighting" data-sub="bar">line bar</button></li>
+            <li><button type="button" class="nav-trigger" data-page="lighting" data-sub="portable">portable</button></li>
+            <li><button type="button" class="nav-trigger" data-page="lighting" data-sub="down">down light</button></li>
           </ul>
         </li>
         <li>
-          <a href="#components" class="is-active-cat" data-nav>Components</a>
+          <button type="button" class="nav-trigger" data-page="components" data-sub="charger">Components</button>
           <ul class="nav-sub">
-            <li><a href="#charger" data-nav>pull-out usb ports</a></li>
+            <li><button type="button" class="nav-trigger" data-page="components" data-sub="charger">pull-out usb ports</button></li>
           </ul>
         </li>
-        <li><a href="#" class="nav-future">Furniture<span class="soon">Coming soon</span></a></li>
-        <li><a href="#" class="nav-future">Object<span class="soon">Coming soon</span></a></li>
+        <li><span class="nav-trigger nav-future">Furniture<span class="soon">Coming soon</span></span></li>
+        <li><span class="nav-trigger nav-future">Object<span class="soon">Coming soon</span></span></li>
       </ul>
     </nav>
 
     <nav class="nav-block">
       <p class="nav-label">Platform</p>
       <ul class="nav-list">
-        <li><a href="#platform" data-nav>Curation Platform</a></li>
-        <li><a href="#contact" data-nav>Contact</a></li>
+        <li><button type="button" class="nav-trigger" data-page="platform">Curation Platform</button></li>
+        <li><button type="button" class="nav-trigger" data-page="contact">Contact</button></li>
       </ul>
     </nav>
   </div>
@@ -843,345 +915,317 @@
   </div>
 </aside>
 
-<main class="canvas">
+<div class="app-main" id="app">
 
-  <!-- Hero -->
-  <section class="hero" id="home">
-    <div class="hero-copy">
-      <p class="eyebrow">Issue 01 · Lifestyle Curation</p>
-      <a href="#home" class="brand-logo brand-logo--hero" aria-label="seen;new studio">
-        <span class="brand-logo__line">seen<span class="brand-semi">;</span>new</span>
-        <span class="brand-logo__line brand-logo__studio">studio</span>
-      </a>
-      <p class="hero-statement">공간의 빛과 결, 그리고 일상의 디테일을 큐레이션합니다.</p>
-      <p class="hero-desc">
-        seen;new studio는 단순한 제품 나열이 아닌, 감도 높은 라이프스타일을 제안하는 큐레이션 플랫폼입니다. 조명에서 가구 컴포넌트까지 — 공간을 완성하는 요소들을 에디토리얼의 시선으로 담아냅니다.
-      </p>
-      <p class="hero-scroll">Scroll to explore</p>
-    </div>
-    <div class="hero-visual">
-      <div class="frame">
-        <img src="hero.jpg" alt="seen;new studio — lifestyle visual" onerror="this.style.display='none'">
-        <span class="frame-tag">Curated Space · 01</span>
+  <!-- HOME -->
+  <section class="page is-active" id="page-home" data-page="home">
+    <div class="page-inner">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Issue 01 · Lifestyle Curation</p>
+          <div class="brand-logo brand-logo--hero">
+            <span class="brand-logo__line">seen<span class="brand-semi">;</span>new</span>
+            <span class="brand-logo__line brand-logo__studio">studio</span>
+          </div>
+          <p class="hero-statement">공간의 빛과 결, 그리고 일상의 디테일을 큐레이션합니다.</p>
+          <p class="hero-desc">seen;new studio는 감도 높은 라이프스타일을 제안하는 큐레이션 플랫폼입니다. 조명에서 가구 컴포넌트까지 — 공간을 완성하는 요소들을 에디토리얼의 시선으로 담아냅니다.</p>
+          <div class="hero-cta">
+            <button type="button" class="btn-ghost nav-trigger" data-page="lighting" data-sub="wall">Explore Lighting</button>
+            <button type="button" class="btn-ghost nav-trigger" data-page="editorial">Read Editorial</button>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="frame">
+            <img src="hero.jpg" alt="seen;new studio lifestyle visual" onerror="this.style.display='none'">
+            <span class="frame-tag">Curated Space · 01</span>
+          </div>
+          <p class="hero-caption">Light, material, and the quiet rhythm of everyday living — curated for spaces that breathe.</p>
+        </div>
       </div>
-      <p class="hero-caption">Light, material, and the quiet rhythm of everyday living — curated for spaces that breathe.</p>
     </div>
   </section>
 
-  <!-- Editorial Manifesto -->
-  <section class="section" id="editorial">
-    <p class="eyebrow">Editorial · Curation</p>
-    <div class="spread">
-      <div class="col-5">
-        <h2 class="display">beyond<br><em>product.</em></h2>
-      </div>
-      <div class="col-7 offset-1">
-        <div class="editorial-manifesto">
-          <p>우리는 쇼핑몰이 아닙니다. seen;new studio는 공간과 삶의 질감을 탐구하는 라이프스타일 큐레이션 플랫폼입니다.</p>
-          <p>현재 LIGHTING과 COMPONENTS — 가구에 스며드는 조명과 pull-out USB port — 에서 시작하지만, FURNITURE, OBJECT, 그리고 Curation Platform으로 무한히 확장될 수 있는 유연한 구조를 지향합니다.</p>
+  <!-- EDITORIAL -->
+  <section class="page" id="page-editorial" data-page="editorial">
+    <div class="page-inner">
+      <p class="eyebrow">Editorial · Curation</p>
+      <div class="spread">
+        <div class="col-5">
+          <h2 class="display">beyond<br><em>product.</em></h2>
+        </div>
+        <div class="col-7 offset-1">
+          <div class="editorial-manifesto">
+            <p>우리는 쇼핑몰이 아닙니다. seen;new studio는 공간과 삶의 질감을 탐구하는 라이프스타일 큐레이션 플랫폼입니다.</p>
+            <p>현재 LIGHTING과 COMPONENTS — 가구에 스며드는 조명과 pull-out USB port — 에서 시작하지만, FURNITURE, OBJECT, Curation Platform으로 무한히 확장될 수 있는 유연한 구조를 지향합니다.</p>
+          </div>
         </div>
       </div>
-    </div>
-    <blockquote class="pull-quote">"Every object in a room tells a story. We curate the chapters."</blockquote>
-    <div class="spread spread-gap">
-      <article class="editorial-card col-7">
-        <div class="frame ratio-land">
-          <img src="project1.jpg" alt="" onerror="this.style.display='none'">
-          <span class="frame-tag">Spaces · Hotel</span>
-        </div>
-        <p class="card-cat">Featured · Lighting</p>
-        <h3 class="card-title">Ambient Layers</h3>
-        <p class="card-desc">시흥 웨이브엠호텔을 비롯한 hospitality 공간에 맞춤 조명 솔루션을 큐레이션했습니다. 기능과 무드를 동시에 담는 빛의 설계.</p>
-      </article>
-      <article class="editorial-card col-5" style="padding-top: 80px;">
-        <div class="frame ratio-port">
-          <img src="about.jpg" alt="" onerror="this.style.display='none'">
-          <span class="frame-tag">Studio</span>
-        </div>
-        <p class="card-cat">Editor's Note</p>
-        <h3 class="card-title">Built-in Beauty</h3>
-        <p class="card-desc">보이지 않는 곳의 디테일이 공간의 완성도를 결정합니다. 가구 빌트인 컴포넌트에 대한 우리의 철학.</p>
-        <p class="card-meta"><a href="#components">Explore Components →</a></p>
-      </article>
+      <blockquote class="pull-quote">"Every object in a room tells a story. We curate the chapters."</blockquote>
+      <div class="spread spread-gap">
+        <article class="editorial-card col-7">
+          <div class="frame ratio-land">
+            <img src="project1.jpg" alt="" onerror="this.style.display='none'">
+            <span class="frame-tag">Spaces · Hotel</span>
+          </div>
+          <p class="card-cat">Featured · Lighting</p>
+          <h3 class="card-title">Ambient Layers</h3>
+          <p class="card-desc">시흥 웨이브엠호텔을 비롯한 hospitality 공간에 맞춤 조명 솔루션을 큐레이션했습니다.</p>
+        </article>
+        <article class="editorial-card col-5 offset-push">
+          <div class="frame ratio-port">
+            <img src="about.jpg" alt="" onerror="this.style.display='none'">
+            <span class="frame-tag">Studio</span>
+          </div>
+          <p class="card-cat">Editor's Note</p>
+          <h3 class="card-title">Built-in Beauty</h3>
+          <p class="card-desc">보이지 않는 곳의 디테일이 공간의 완성도를 결정합니다.</p>
+          <p class="card-meta"><button type="button" class="nav-trigger" data-page="components" data-sub="charger" style="opacity:1;">Explore Components →</button></p>
+        </article>
+      </div>
     </div>
   </section>
 
   <!-- LIGHTING -->
-  <section class="section" id="lighting">
-    <div class="cat-header">
-      <h2 class="display">lighting</h2>
-      <p class="cat-intro">공간의 분위기를 완성하는 빛. 벽부등, line bar, portable, down light — 각각을 독립적인 큐레이션 시리즈로 제안합니다.</p>
-    </div>
+  <section class="page" id="page-lighting" data-page="lighting">
+    <div class="page-inner">
+      <div class="cat-header">
+        <h2 class="display">lighting</h2>
+        <p class="cat-intro">공간의 분위기를 완성하는 빛. 벽부등, line bar, portable, down light — 각각을 독립적인 큐레이션 시리즈로 제안합니다.</p>
+      </div>
 
-    <div class="sub-cat" id="wall">
-      <div class="sub-cat-head">
-        <h3>Wall</h3>
-        <p>DC12V 벽부등 · 18 selections</p>
+      <div class="sub-tabs" role="tablist">
+        <button type="button" class="sub-tab active" data-sub="wall">Wall</button>
+        <button type="button" class="sub-tab" data-sub="bar">Line Bar</button>
+        <button type="button" class="sub-tab" data-sub="portable">Portable</button>
+        <button type="button" class="sub-tab" data-sub="down">Down Light</button>
       </div>
-      <div class="curated-index">
-        <article class="curated-item curated-item--feature">
-          <div class="frame ratio-wide"><img src="product5.jpg" alt="Treel" onerror="this.style.display='none'"><span class="frame-tag">Treel</span></div>
-          <h4 class="item-name">Treel</h4>
-          <p class="item-code">LT_WL_CYJR01</p>
-          <p class="item-note">LED 1W · Oak, Walnut · 180×83mm · 3,000K</p>
-        </article>
-        <article class="curated-item curated-item--side">
-          <div class="frame ratio-tall"><img src="product6.jpg" alt="Sunny 01" onerror="this.style.display='none'"><span class="frame-tag">Sunny 01</span></div>
-          <h4 class="item-name">Sunny 01</h4>
-          <p class="item-code">LT_WL_LSFR01</p>
-          <p class="item-note">E26 5W · Gold · 281.5×209mm</p>
-        </article>
-        <article class="curated-item curated-item--third">
-          <div class="frame ratio-tall"><img src="product12.jpg" alt="Viva Circle" onerror="this.style.display='none'"></div>
-          <h4 class="item-name">Viva Circle</h4>
-          <p class="item-code">LT_WL_CRCYJBS01</p>
-          <p class="item-note">LED 3/7W · 146×72mm · 6,000K</p>
-        </article>
-        <article class="curated-item curated-item--third">
-          <div class="frame ratio-tall"><img src="product15.jpg" alt="Eclipse" onerror="this.style.display='none'"></div>
-          <h4 class="item-name">Eclipse</h4>
-          <p class="item-code">LT_WL_CRFB01</p>
-          <p class="item-note">LED 5W · 150×50mm</p>
-        </article>
-        <article class="curated-item curated-item--third">
-          <div class="frame ratio-tall"><img src="product19.jpg" alt="Lake" onerror="this.style.display='none'"></div>
-          <h4 class="item-name">Lake</h4>
-          <p class="item-code">LT_WL_CRFR01</p>
-          <p class="item-note">LED 3W · Ø138×70mm</p>
-        </article>
-      </div>
-    </div>
 
-    <div class="sub-cat" id="bar">
-      <div class="sub-cat-head">
-        <h3>Line Bar</h3>
-        <p>BIC-100 · 면발광 LED BAR</p>
+      <div class="sub-panel is-visible" data-sub="wall">
+        <div class="sub-cat-head"><h3>Wall</h3><p>DC12V 벽부등 · curated selection</p></div>
+        <div class="curated-index">
+          <article class="curated-item curated-item--feature">
+            <div class="frame ratio-wide"><img src="product5.jpg" alt="Treel" onerror="this.style.display='none'"><span class="frame-tag">Treel</span></div>
+            <h4 class="item-name">Treel</h4><p class="item-code">LT_WL_CYJR01</p><p class="item-note">LED 1W · Oak, Walnut · 180×83mm · 3,000K</p>
+          </article>
+          <article class="curated-item curated-item--side">
+            <div class="frame ratio-tall"><img src="product6.jpg" alt="Sunny 01" onerror="this.style.display='none'"><span class="frame-tag">Sunny 01</span></div>
+            <h4 class="item-name">Sunny 01</h4><p class="item-code">LT_WL_LSFR01</p><p class="item-note">E26 5W · Gold · 281.5×209mm</p>
+          </article>
+          <article class="curated-item curated-item--third">
+            <div class="frame ratio-tall"><img src="product12.jpg" alt="" onerror="this.style.display='none'"></div>
+            <h4 class="item-name">Viva Circle</h4><p class="item-code">LT_WL_CRCYJBS01</p><p class="item-note">LED 3/7W · 146×72mm · 6,000K</p>
+          </article>
+          <article class="curated-item curated-item--third">
+            <div class="frame ratio-tall"><img src="product15.jpg" alt="" onerror="this.style.display='none'"></div>
+            <h4 class="item-name">Eclipse</h4><p class="item-code">LT_WL_CRFB01</p><p class="item-note">LED 5W · 150×50mm</p>
+          </article>
+          <article class="curated-item curated-item--third">
+            <div class="frame ratio-tall"><img src="product19.jpg" alt="" onerror="this.style.display='none'"></div>
+            <h4 class="item-name">Lake</h4><p class="item-code">LT_WL_CRFR01</p><p class="item-note">LED 3W · Ø138×70mm</p>
+          </article>
+        </div>
       </div>
-      <div class="spread">
-        <article class="editorial-card col-6">
-          <div class="frame ratio-sq"><img src="product23.jpg" alt="BIC-100" onerror="this.style.display='none'"><span class="frame-tag">BIC-100</span></div>
-          <h4 class="item-name">BIC-100</h4>
-          <p class="item-code">SMT-BIC-100</p>
-          <p class="item-note">DC 12V 3A · USB-C Fast · 4,000K</p>
-        </article>
-        <article class="editorial-card col-6" style="padding-top: 64px;">
-          <div class="frame ratio-sq"><img src="product24.jpg" alt="LED BAR" onerror="this.style.display='none'"><span class="frame-tag">Line Bar</span></div>
-          <h4 class="item-name">면발광 LED BAR</h4>
-          <p class="item-code">LT_BAR_(500~)</p>
-          <p class="item-note">DC12V · 500~1200mm · 4,000K / 6,500K</p>
-        </article>
-      </div>
-    </div>
 
-    <div class="sub-cat" id="portable">
-      <div class="sub-cat-head">
-        <h3>Portable</h3>
-        <p>Neo · Raon</p>
+      <div class="sub-panel" data-sub="bar">
+        <div class="sub-cat-head"><h3>Line Bar</h3><p>BIC-100 · 면발광 LED BAR</p></div>
+        <div class="spread">
+          <article class="editorial-card col-6">
+            <div class="frame ratio-sq"><img src="product23.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">BIC-100</span></div>
+            <h4 class="item-name">BIC-100</h4><p class="item-code">SMT-BIC-100</p><p class="item-note">DC 12V 3A · USB-C Fast · 4,000K</p>
+          </article>
+          <article class="editorial-card col-6 offset-push">
+            <div class="frame ratio-sq"><img src="product24.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">Line Bar</span></div>
+            <h4 class="item-name">면발광 LED BAR</h4><p class="item-code">LT_BAR_(500~)</p><p class="item-note">DC12V · 500~1200mm · 4,000K / 6,500K</p>
+          </article>
+        </div>
       </div>
-      <div class="spread">
-        <article class="editorial-card col-5 offset-1">
-          <div class="frame ratio-port"><img src="product25.jpg" alt="Neo" onerror="this.style.display='none'"><span class="frame-tag">Neo</span></div>
-          <h4 class="item-name">Neo</h4>
-          <p class="item-code">LT_PB_CRMGS01</p>
-          <p class="item-note">Lithium-ion · 4.5W · 76×43.5mm</p>
-        </article>
-        <article class="editorial-card col-5">
-          <div class="frame ratio-port"><img src="product26.jpg" alt="Raon" onerror="this.style.display='none'"><span class="frame-tag">Raon</span></div>
-          <h4 class="item-name">Raon</h4>
-          <p class="item-code">LT_WL_CYMGS02</p>
-          <p class="item-note">DC12V · LED 4W · 3,000K</p>
-        </article>
-      </div>
-    </div>
 
-    <div class="sub-cat" id="down">
-      <div class="sub-cat-head">
-        <h3>Down Light</h3>
-        <p>Apex · 사각매입조명</p>
+      <div class="sub-panel" data-sub="portable">
+        <div class="sub-cat-head"><h3>Portable</h3><p>Neo · Raon</p></div>
+        <div class="spread">
+          <article class="editorial-card col-5 offset-1">
+            <div class="frame ratio-port"><img src="product25.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">Neo</span></div>
+            <h4 class="item-name">Neo</h4><p class="item-code">LT_PB_CRMGS01</p><p class="item-note">Lithium-ion · 4.5W · 76×43.5mm</p>
+          </article>
+          <article class="editorial-card col-5">
+            <div class="frame ratio-port"><img src="product26.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">Raon</span></div>
+            <h4 class="item-name">Raon</h4><p class="item-code">LT_WL_CYMGS02</p><p class="item-note">DC12V · LED 4W · 3,000K</p>
+          </article>
+        </div>
       </div>
-      <article class="editorial-card col-8">
-        <div class="frame ratio-cinema"><img src="product27.jpg" alt="Apex" onerror="this.style.display='none'"><span class="frame-tag">Apex</span></div>
-        <h4 class="item-name">Apex</h4>
-        <p class="item-code">LT_RL_SQRTS_01</p>
-        <p class="item-note">LED COB 15W · 24° · 105×105×68mm · 4,000K</p>
-      </article>
+
+      <div class="sub-panel" data-sub="down">
+        <div class="sub-cat-head"><h3>Down Light</h3><p>Apex · 사각매입조명</p></div>
+        <article class="editorial-card col-8">
+          <div class="frame ratio-cinema"><img src="product27.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">Apex</span></div>
+          <h4 class="item-name">Apex</h4><p class="item-code">LT_RL_SQRTS_01</p><p class="item-note">LED COB 15W · 24° · 105×105×68mm · 4,000K</p>
+        </article>
+      </div>
     </div>
   </section>
 
   <!-- COMPONENTS -->
-  <section class="section" id="components">
-    <div class="cat-header">
-      <h2 class="display">components</h2>
-      <p class="cat-intro">Furniture Components — 가구에 스며드는 pull-out USB port와 빌트인 모듈. 보이지 않는 곳의 완성도를 큐레이션합니다.</p>
-    </div>
-
-    <div class="sub-cat" id="charger">
-      <div class="sub-cat-head">
-        <h3>Pull-out USB Ports</h3>
-        <p>가구 빌트인용 충전 모듈</p>
+  <section class="page" id="page-components" data-page="components">
+    <div class="page-inner">
+      <div class="cat-header">
+        <h2 class="display">components</h2>
+        <p class="cat-intro">Furniture Components — 가구에 스며드는 pull-out USB port와 빌트인 모듈. 보이지 않는 곳의 완성도를 큐레이션합니다.</p>
       </div>
-      <div class="curated-index">
-        <article class="curated-item curated-item--feature">
-          <div class="frame ratio-wide"><img src="product1.jpg" alt="Multi Charger" onerror="this.style.display='none'"><span class="frame-tag">Multi Charger</span></div>
-          <h4 class="item-name">Multi Charger</h4>
-          <p class="item-code">MULTI-CHARGER-01</p>
-          <p class="item-note">220V/60Hz 10A · 9V/1.6A, 5V/2A · 70×110×53mm</p>
-        </article>
-        <article class="curated-item curated-item--side">
-          <div class="frame ratio-tall"><img src="product2.jpg" alt="One Port" onerror="this.style.display='none'"><span class="frame-tag">One Port</span></div>
-          <h4 class="item-name">One Port</h4>
-          <p class="item-code">CG_1PM_G_01~02</p>
-          <p class="item-note">12V 2A · 24W Max · 64×64×32mm</p>
-        </article>
-        <article class="curated-item curated-item--third">
-          <div class="frame ratio-tall"><img src="product3.jpg" alt="Two Port 01" onerror="this.style.display='none'"></div>
-          <h4 class="item-name">Two Port 01</h4>
-          <p class="item-code">CG_2PT_G_01</p>
-          <p class="item-note">12V 2A · 24W Max · 64×64×32mm</p>
-        </article>
-        <article class="curated-item curated-item--third">
-          <div class="frame ratio-tall"><img src="product4.jpg" alt="Two Port 02" onerror="this.style.display='none'"></div>
-          <h4 class="item-name">Two Port 02</h4>
-          <p class="item-code">CG_2PT_G_02</p>
-          <p class="item-note">12V 3A · 36W Max · Customization</p>
-        </article>
+
+      <div class="sub-tabs" role="tablist">
+        <button type="button" class="sub-tab active" data-sub="charger">Pull-out USB Ports</button>
+      </div>
+
+      <div class="sub-panel is-visible" data-sub="charger">
+        <div class="curated-index">
+          <article class="curated-item curated-item--feature">
+            <div class="frame ratio-wide"><img src="product1.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">Multi Charger</span></div>
+            <h4 class="item-name">Multi Charger</h4><p class="item-code">MULTI-CHARGER-01</p><p class="item-note">220V/60Hz 10A · 9V/1.6A, 5V/2A · 70×110×53mm</p>
+          </article>
+          <article class="curated-item curated-item--side">
+            <div class="frame ratio-tall"><img src="product2.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">One Port</span></div>
+            <h4 class="item-name">One Port</h4><p class="item-code">CG_1PM_G_01~02</p><p class="item-note">12V 2A · 24W Max · 64×64×32mm</p>
+          </article>
+          <article class="curated-item curated-item--third">
+            <div class="frame ratio-tall"><img src="product3.jpg" alt="" onerror="this.style.display='none'"></div>
+            <h4 class="item-name">Two Port 01</h4><p class="item-code">CG_2PT_G_01</p><p class="item-note">12V 2A · 24W Max · 64×64×32mm</p>
+          </article>
+          <article class="curated-item curated-item--third">
+            <div class="frame ratio-tall"><img src="product4.jpg" alt="" onerror="this.style.display='none'"></div>
+            <h4 class="item-name">Two Port 02</h4><p class="item-code">CG_2PT_G_02</p><p class="item-note">12V 3A · 36W Max · Customization</p>
+          </article>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Platform Vision -->
-  <section class="section" id="platform">
-    <p class="eyebrow">Platform · Expansion</p>
-    <h2 class="display">curation<br><em>platform</em></h2>
-    <p class="lede lede--wide">seen;new studio는 카테고리의 경계 없이, 라이프스타일 전 영역으로 확장되는 큐레이션 플랫폼을 지향합니다.</p>
-    <div class="platform-grid">
-      <div class="platform-cell is-live">
-        <p class="platform-name">Lighting</p>
-        <p class="platform-desc">Wall, line bar, portable, down light — 공간의 빛을 큐레이션합니다.</p>
-        <p class="platform-status">Active</p>
-      </div>
-      <div class="platform-cell is-live">
-        <p class="platform-name">Components</p>
-        <p class="platform-desc">Pull-out USB ports &amp; furniture-integrated modules.</p>
-        <p class="platform-status">Active</p>
-      </div>
-      <div class="platform-cell is-future">
-        <p class="platform-name">Furniture</p>
-        <p class="platform-desc">공간을 완성하는 가구 — 큐레이션 준비 중.</p>
-        <p class="platform-status">Coming soon</p>
-      </div>
-      <div class="platform-cell is-future">
-        <p class="platform-name">Object</p>
-        <p class="platform-desc">일상의 사물, 오브제 — 감각적인 선택.</p>
-        <p class="platform-status">Coming soon</p>
-      </div>
-      <div class="platform-cell is-future">
-        <p class="platform-name">Curation</p>
-        <p class="platform-desc">Editorial &amp; platform business — 브랜드와 공간을 연결하는 큐레이션.</p>
-        <p class="platform-status">In development</p>
-      </div>
-      <div class="platform-cell is-live">
-        <p class="platform-name">Spaces</p>
-        <p class="platform-desc">Hotel, interior, landscape — 프로젝트 기록.</p>
-        <p class="platform-status"><a href="#spaces">View →</a></p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Spaces -->
-  <section class="section" id="spaces">
-    <p class="eyebrow">Spaces · Projects</p>
-    <h2 class="display">curated<br>spaces</h2>
-    <p class="lede">국내 주요 가구·침대 브랜드, hospitality, landscape — seen;new studio가 빛과 컴포넌트로 참여한 공간들.</p>
-    <div class="spread" style="margin-bottom: 80px;">
-      <div class="col-8">
-        <div class="frame ratio-land"><img src="project1.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">Wave M Hotel</span></div>
-      </div>
-      <div class="col-4" style="padding-top: 48px;">
-        <div class="frame ratio-port"><img src="project2.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">Interior</span></div>
-      </div>
-    </div>
-    <div class="spaces-list">
-      <div class="space-row"><span class="space-type">Hotel</span><span class="space-year">2023</span><span class="space-title">시흥 웨이브엠호텔 조명 납품</span></div>
-      <div class="space-row"><span class="space-type">Rest Area</span><span class="space-year">2024</span><span class="space-title">민커뮤니케이션 휴게소 리모델링 조명 공급</span></div>
-      <div class="space-row"><span class="space-type">Landscape</span><span class="space-year">—</span><span class="space-title">병점역 육교 경관조명 디자인 및 조명 납품</span></div>
-      <div class="space-row"><span class="space-type">Interior</span><span class="space-year">2023</span><span class="space-title">남양주 한샘 바흐하우스 · 유풍사옥 리모델링 조명</span></div>
-      <div class="space-row"><span class="space-type">Portable</span><span class="space-year">2024</span><span class="space-title">말타니 디즈니 포터블·마그넷조명 개발 및 공급</span></div>
-    </div>
-    <div class="partners">
-      <span>금성침대</span><span>세양침대</span><span>한샘</span><span>말타니</span>
-      <span>일루이가구</span><span>크라운디자인</span><span>Emons</span><span>정호산업</span>
-    </div>
-  </section>
-
-  <!-- Studio -->
-  <section class="section" id="studio">
-    <p class="eyebrow">Studio</p>
-    <h2 class="display">about<br>studio</h2>
-    <div class="studio-split">
-      <div class="frame ratio-port">
-        <img src="about.jpg" alt="" onerror="this.style.display='none'">
-        <span class="frame-tag">LTS CORP.</span>
-      </div>
-      <div class="prose">
-        <p>seen;new studio는 LTS CORP.(엘티에스)의 라이프스타일 큐레이션 브랜드입니다. 2012년 설립 이래 LED 조명·전자기기 분야의 기술력을 바탕으로, 금성침대·세양침대·한샘·말타니 등 국내 주요 가구·침대 브랜드에 납품해 왔습니다.</p>
-        <p>제품 나열이 아닌, 공간과 삶의 질감을 탐구하는 에디토리얼 플랫폼으로 정체성을 확장하고 있습니다.</p>
-        <dl class="meta-table">
-          <div class="meta-row"><dt>Company</dt><dd>엘티에스 LTS CORP.</dd></div>
-          <div class="meta-row"><dt>CEO</dt><dd>김영균</dd></div>
-          <div class="meta-row"><dt>Address</dt><dd>서울시 금천구 벚꽃로 244<br>벽산디지털밸리5차 1505호</dd></div>
-          <div class="meta-row"><dt>Contact</dt><dd>T 070-4306-3500 · 010-7763-3500</dd></div>
-        </dl>
+  <!-- PLATFORM -->
+  <section class="page" id="page-platform" data-page="platform">
+    <div class="page-inner">
+      <p class="eyebrow">Platform · Expansion</p>
+      <h2 class="display">curation<br><em>platform</em></h2>
+      <p class="lede lede--wide">seen;new studio는 카테고리의 경계 없이, 라이프스타일 전 영역으로 확장되는 큐레이션 플랫폼을 지향합니다.</p>
+      <div class="platform-grid">
+        <div class="platform-cell is-live">
+          <p class="platform-name">Lighting</p>
+          <p class="platform-desc">Wall, line bar, portable, down light — 공간의 빛을 큐레이션합니다.</p>
+          <p class="platform-status"><button type="button" class="nav-trigger" data-page="lighting" data-sub="wall">Active · View →</button></p>
+        </div>
+        <div class="platform-cell is-live">
+          <p class="platform-name">Components</p>
+          <p class="platform-desc">Pull-out USB ports &amp; furniture-integrated modules.</p>
+          <p class="platform-status"><button type="button" class="nav-trigger" data-page="components" data-sub="charger">Active · View →</button></p>
+        </div>
+        <div class="platform-cell is-future">
+          <p class="platform-name">Furniture</p>
+          <p class="platform-desc">공간을 완성하는 가구 — 큐레이션 준비 중.</p>
+          <p class="platform-status">Coming soon</p>
+        </div>
+        <div class="platform-cell is-future">
+          <p class="platform-name">Object</p>
+          <p class="platform-desc">일상의 사물, 오브제 — 감각적인 선택.</p>
+          <p class="platform-status">Coming soon</p>
+        </div>
+        <div class="platform-cell is-future">
+          <p class="platform-name">Curation</p>
+          <p class="platform-desc">Editorial &amp; platform business — 브랜드와 공간을 연결.</p>
+          <p class="platform-status">In development</p>
+        </div>
+        <div class="platform-cell is-live">
+          <p class="platform-name">Spaces</p>
+          <p class="platform-desc">Hotel, interior, landscape — 프로젝트 기록.</p>
+          <p class="platform-status"><button type="button" class="nav-trigger" data-page="spaces">View →</button></p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Contact -->
-  <section class="section" id="contact">
-    <p class="eyebrow">Contact</p>
-    <h2 class="display">get in<br>touch</h2>
-    <div class="contact-split">
-      <div>
-        <div class="contact-block"><p class="lbl">Address</p><p>서울시 금천구 벚꽃로 244<br>벽산디지털밸리5차 1505호</p></div>
-        <div class="contact-block"><p class="lbl">Tel / Fax</p><p>T 070-4306-3500 · 010-7763-3500<br>F 0504-268-4392</p></div>
-        <div class="contact-block"><p class="lbl">Hours</p><p>Weekly 09:00 – 18:00</p></div>
-        <div class="frame ratio-land" style="margin-top: 40px;"><img src="map.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">Map</span></div>
+  <!-- SPACES -->
+  <section class="page" id="page-spaces" data-page="spaces">
+    <div class="page-inner">
+      <p class="eyebrow">Spaces · Projects</p>
+      <h2 class="display">curated<br>spaces</h2>
+      <p class="lede">국내 주요 가구·침대 브랜드, hospitality, landscape — seen;new studio가 참여한 공간들.</p>
+      <div class="spread" style="margin-bottom: 64px;">
+        <div class="col-8">
+          <div class="frame ratio-land"><img src="project1.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">Wave M Hotel</span></div>
+        </div>
+        <div class="col-4 offset-push">
+          <div class="frame ratio-port"><img src="project2.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">Interior</span></div>
+        </div>
       </div>
-      <form onsubmit="event.preventDefault();alert('문의가 접수되었습니다.');">
-        <div class="field"><label>Name</label><input type="text" required></div>
-        <div class="field"><label>Email</label><input type="email" required></div>
-        <div class="field"><label>Message</label><textarea rows="4" required></textarea></div>
-        <button type="submit" class="submit">Send</button>
-      </form>
+      <div class="spaces-list">
+        <div class="space-row"><span class="space-type">Hotel</span><span class="space-year">2023</span><span class="space-title">시흥 웨이브엠호텔 조명 납품</span></div>
+        <div class="space-row"><span class="space-type">Rest Area</span><span class="space-year">2024</span><span class="space-title">민커뮤니케이션 휴게소 리모델링 조명 공급</span></div>
+        <div class="space-row"><span class="space-type">Landscape</span><span class="space-year">—</span><span class="space-title">병점역 육교 경관조명 디자인 및 조명 납품</span></div>
+        <div class="space-row"><span class="space-type">Interior</span><span class="space-year">2023</span><span class="space-title">남양주 한샘 바흐하우스 · 유풍사옥 리모델링 조명</span></div>
+        <div class="space-row"><span class="space-type">Portable</span><span class="space-year">2024</span><span class="space-title">말타니 디즈니 포터블·마그넷조명 개발 및 공급</span></div>
+      </div>
+      <div class="partners">
+        <span>금성침대</span><span>세양침대</span><span>한샘</span><span>말타니</span>
+        <span>일루이가구</span><span>크라운디자인</span><span>Emons</span><span>정호산업</span>
+      </div>
     </div>
   </section>
 
-</main>
+  <!-- STUDIO -->
+  <section class="page" id="page-studio" data-page="studio">
+    <div class="page-inner">
+      <p class="eyebrow">Studio</p>
+      <h2 class="display">about<br>studio</h2>
+      <div class="studio-split">
+        <div class="frame ratio-port">
+          <img src="about.jpg" alt="" onerror="this.style.display='none'">
+          <span class="frame-tag">LTS CORP.</span>
+        </div>
+        <div class="prose">
+          <p>seen;new studio는 LTS CORP.(엘티에스)의 라이프스타일 큐레이션 브랜드입니다. 2012년 설립 이래 LED 조명·전자기기 분야의 기술력을 바탕으로, 금성침대·세양침대·한샘·말타니 등 국내 주요 가구·침대 브랜드에 납품해 왔습니다.</p>
+          <p>제품 나열이 아닌, 공간과 삶의 질감을 탐구하는 에디토리얼 플랫폼으로 정체성을 확장하고 있습니다.</p>
+          <dl class="meta-table">
+            <div class="meta-row"><dt>Company</dt><dd>엘티에스 LTS CORP.</dd></div>
+            <div class="meta-row"><dt>CEO</dt><dd>김영균</dd></div>
+            <div class="meta-row"><dt>Address</dt><dd>서울시 금천구 벚꽃로 244<br>벽산디지털밸리5차 1505호</dd></div>
+            <div class="meta-row"><dt>Contact</dt><dd>T 070-4306-3500 · 010-7763-3500</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<footer class="site-foot">
-  <div>
-    <a href="#home" class="brand-logo brand-logo--foot">
-      <span class="brand-logo__line">seen<span class="brand-semi">;</span>new</span>
-      <span class="brand-logo__studio">studio</span>
-    </a>
-    <p style="margin-top: 12px;">© LTS CORP. All rights reserved.</p>
-  </div>
-  <div class="foot-nav">
-    <a href="#editorial">Editorial</a>
-    <a href="#platform">Platform</a>
-    <a href="#contact">Contact</a>
-  </div>
-  <div>
-    서울시 금천구 벚꽃로 244<br>
-    T 070-4306-3500
-  </div>
-</footer>
+  <!-- CONTACT -->
+  <section class="page" id="page-contact" data-page="contact">
+    <div class="page-inner">
+      <p class="eyebrow">Contact</p>
+      <h2 class="display">get in<br>touch</h2>
+      <div class="contact-split">
+        <div>
+          <div class="contact-block"><p class="lbl">Address</p><p>서울시 금천구 벚꽃로 244<br>벽산디지털밸리5차 1505호</p></div>
+          <div class="contact-block"><p class="lbl">Tel / Fax</p><p>T 070-4306-3500 · 010-7763-3500<br>F 0504-268-4392</p></div>
+          <div class="contact-block"><p class="lbl">Hours</p><p>Weekly 09:00 – 18:00</p></div>
+          <div class="frame ratio-land" style="margin-top: 32px;"><img src="map.jpg" alt="" onerror="this.style.display='none'"><span class="frame-tag">Map</span></div>
+        </div>
+        <form onsubmit="event.preventDefault();alert('문의가 접수되었습니다.');">
+          <div class="field"><label>Name</label><input type="text" required></div>
+          <div class="field"><label>Email</label><input type="email" required></div>
+          <div class="field"><label>Message</label><textarea rows="4" required></textarea></div>
+          <button type="submit" class="submit">Send</button>
+        </form>
+      </div>
+      <p class="page-credit">© LTS CORP. · seen;new studio — Lifestyle Curation Platform</p>
+    </div>
+  </section>
+
+</div>
 
 <script>
 (function () {
+  var TRANSITION_MS = 550;
+  var currentPage = 'home';
   var sidebar = document.getElementById('sidebar');
   var burger = document.getElementById('burger');
   var veil = document.getElementById('veil');
+  var pages = document.querySelectorAll('.page');
+  var isTransitioning = false;
 
   function closeMenu() {
     sidebar.classList.remove('open');
@@ -1189,16 +1233,144 @@
     veil.classList.remove('on');
   }
 
+  function openMenu() {
+    sidebar.classList.add('open');
+    burger.classList.add('on');
+    veil.classList.add('on');
+  }
+
   burger.addEventListener('click', function () {
-    var open = sidebar.classList.toggle('open');
-    burger.classList.toggle('on', open);
-    veil.classList.toggle('on', open);
+    if (sidebar.classList.contains('open')) closeMenu();
+    else openMenu();
   });
 
   veil.addEventListener('click', closeMenu);
-  document.querySelectorAll('[data-nav]').forEach(function (a) {
-    a.addEventListener('click', closeMenu);
+
+  function setSubPanel(pageEl, subId) {
+    if (!pageEl || !subId) return;
+    var tabs = pageEl.querySelectorAll('.sub-tab');
+    var panels = pageEl.querySelectorAll('.sub-panel');
+    tabs.forEach(function (t) {
+      t.classList.toggle('active', t.getAttribute('data-sub') === subId);
+    });
+    panels.forEach(function (p) {
+      p.classList.toggle('is-visible', p.getAttribute('data-sub') === subId);
+    });
+  }
+
+  function updateNav(pageId, subId) {
+    document.querySelectorAll('.nav-trigger[data-page]').forEach(function (btn) {
+      var matchPage = btn.getAttribute('data-page') === pageId;
+      var btnSub = btn.getAttribute('data-sub');
+      if (subId && btnSub) {
+        btn.classList.toggle('active', matchPage && btnSub === subId);
+      } else if (!btnSub) {
+        btn.classList.toggle('active', matchPage && !subId);
+      } else {
+        btn.classList.toggle('active', false);
+      }
+    });
+
+    if (pageId === 'lighting' || pageId === 'components') {
+      document.querySelectorAll('.nav-trigger[data-page="' + pageId + '"]:not([data-sub])').forEach(function (btn) {
+        btn.classList.add('active');
+      });
+    }
+  }
+
+  function navigate(pageId, subId, pushHash) {
+    if (isTransitioning || !pageId) return;
+    var next = document.getElementById('page-' + pageId);
+    if (!next) return;
+
+    var samePage = currentPage === pageId;
+    if (samePage && subId) {
+      setSubPanel(next, subId);
+      updateNav(pageId, subId);
+      next.scrollTop = 0;
+      if (pushHash !== false) {
+        history.replaceState({ page: pageId, sub: subId || '' }, '', '#' + pageId + (subId ? '/' + subId : ''));
+      }
+      closeMenu();
+      return;
+    }
+
+    if (samePage) return;
+
+    isTransitioning = true;
+    var prev = document.getElementById('page-' + currentPage);
+
+    if (prev) {
+      prev.classList.add('is-leaving');
+      prev.classList.remove('is-active');
+    }
+
+    if (subId) setSubPanel(next, subId);
+    else {
+      var firstSub = next.querySelector('.sub-tab');
+      if (firstSub) setSubPanel(next, firstSub.getAttribute('data-sub'));
+    }
+
+    next.scrollTop = 0;
+    next.classList.add('is-active');
+
+    setTimeout(function () {
+      if (prev) prev.classList.remove('is-leaving');
+      isTransitioning = false;
+    }, TRANSITION_MS);
+
+    currentPage = pageId;
+    var activeTab = next.querySelector('.sub-tab.active');
+    updateNav(pageId, subId || (activeTab ? activeTab.getAttribute('data-sub') : null));
+    closeMenu();
+
+    if (pushHash !== false) {
+      history.replaceState({ page: pageId, sub: subId || '' }, '', '#' + pageId + (subId ? '/' + subId : ''));
+    }
+  }
+
+  document.querySelectorAll('.nav-trigger[data-page]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      navigate(btn.getAttribute('data-page'), btn.getAttribute('data-sub') || null);
+    });
   });
+
+  document.querySelectorAll('.page').forEach(function (pageEl) {
+    pageEl.querySelectorAll('.sub-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var subId = tab.getAttribute('data-sub');
+        var pageId = pageEl.getAttribute('data-page');
+        setSubPanel(pageEl, subId);
+        updateNav(pageId, subId);
+        pageEl.scrollTop = 0;
+        history.replaceState({ page: pageId, sub: subId }, '', '#' + pageId + '/' + subId);
+      });
+    });
+  });
+
+  function parseHash() {
+    var raw = (location.hash || '#home').replace(/^#/, '');
+    var parts = raw.split('/');
+    return { page: parts[0] || 'home', sub: parts[1] || null };
+  }
+
+  window.addEventListener('hashchange', function () {
+    var h = parseHash();
+    navigate(h.page, h.sub, false);
+  });
+
+  window.addEventListener('popstate', function (e) {
+    if (e.state && e.state.page) navigate(e.state.page, e.state.sub || null, false);
+  });
+
+  var initial = parseHash();
+  if (initial.page !== 'home') {
+    document.getElementById('page-home').classList.remove('is-active');
+    navigate(initial.page, initial.sub, false);
+  } else {
+    history.replaceState({ page: 'home', sub: '' }, '', '#home');
+  }
 })();
 </script>
 </body>
