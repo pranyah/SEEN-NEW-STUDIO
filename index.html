@@ -10,479 +10,425 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/css/SpoqaHanSansNeo.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+    /* ── Variables ──────────────────────────────────────────── */
     :root {
-      --white: #ffffff;
-      --text: #1a1a1a;
-      --text-mid: #2b2b2b;
-      --text-body: #3d3d3d;
+      --white:      #ffffff;
+      --text:       #1a1a1a;
+      --text-mid:   #2b2b2b;
+      --text-body:  #3d3d3d;
       --text-light: #666666;
-      --line: rgba(43, 43, 43, 0.08);
-      --line-soft: rgba(43, 43, 43, 0.05);
-      --ph: #f6f6f6;
-      --nav-w: 280px;
+      --line:       rgba(43,43,43,0.08);
+      --line-soft:  rgba(43,43,43,0.05);
+      --ph:         #f5f5f5;
+      --nav-w:      260px;
       --mobile-bar: 56px;
-      --pad-y: 80px;
-      --pad-x: 8%;
-      --ease: cubic-bezier(0.22, 1, 0.36, 1);
-      --transition: 0.55s var(--ease);
+      --pad-y:      72px;
+      --pad-x:      7%;
+      --ease:       cubic-bezier(0.22,1,0.36,1);
+      --ease-fp:    cubic-bezier(0.77,0,0.175,1);
+      --fp-dur:     1000ms;
     }
 
+    /* ── Reset ──────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; overflow: hidden; }
 
     body {
       font-family: 'Noto Sans KR', sans-serif;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 2;
-      letter-spacing: 0.02em;
-      color: var(--text);
-      background: var(--white);
+      font-weight: 400; font-size: 14px;
+      line-height: 2; letter-spacing: 0.02em;
+      color: var(--text); background: var(--white);
       -webkit-font-smoothing: antialiased;
     }
 
     ::selection { background: var(--text); color: var(--white); }
 
-    a, button.nav-trigger, button.sub-tab, button.btn-ghost {
+    a, button {
       color: inherit; text-decoration: none;
-      transition: opacity 0.35s ease, color 0.35s ease, background 0.4s ease;
       background: none; border: none; cursor: pointer;
       font: inherit; text-align: left; padding: 0;
+      transition: opacity 0.3s ease, background 0.35s ease, color 0.3s ease;
     }
-    a:hover, button.nav-trigger:hover { opacity: 0.72; }
 
+    /* ── Brand Logo ─────────────────────────────────────────── */
     .brand-logo {
       display: block;
       font-family: 'Spoqa Han Sans Neo', 'Noto Sans KR', sans-serif;
-      font-weight: 300;
-      color: var(--text);
-      letter-spacing: 0.06em;
-      line-height: 1.12;
-      text-transform: lowercase;
+      font-weight: 300; letter-spacing: 0.06em;
+      line-height: 1.12; text-transform: lowercase; color: var(--text);
     }
-    .brand-logo:hover { opacity: 1; }
-    .brand-logo__line { display: block; white-space: nowrap; }
-    .brand-semi { font-weight: 200; letter-spacing: 0.12em; opacity: 0.72; margin: 0 0.04em; }
-    .brand-logo--sidebar .brand-logo__line { font-size: 15px; }
+    .brand-logo__line  { display: block; white-space: nowrap; }
+    .brand-semi        { font-weight: 200; letter-spacing: 0.12em; opacity: 0.7; }
+    .brand-logo--sidebar .brand-logo__line   { font-size: 15px; }
     .brand-logo--sidebar .brand-logo__studio { margin-top: 2px; letter-spacing: 0.28em; }
-    .brand-logo--hero { margin-bottom: 40px; }
+    .brand-logo--hero   { margin-bottom: 28px; }
     .brand-logo--hero .brand-logo__line,
-    .brand-logo--hero .brand-logo__studio { font-size: clamp(28px, 5vw, 56px); letter-spacing: 0.04em; }
-    .brand-logo--hero .brand-logo__studio { letter-spacing: 0.38em; }
-    .logo-sub { margin-top: 14px; font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--text-light); }
+    .brand-logo--hero .brand-logo__studio { font-size: clamp(26px,4.5vw,52px); letter-spacing: 0.04em; }
+    .brand-logo--hero .brand-logo__studio  { letter-spacing: 0.38em; }
+    .logo-sub { margin-top: 12px; font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--text-light); }
 
+    /* ── Mobile Bar ─────────────────────────────────────────── */
     .mobile-bar {
       display: none; position: fixed; top: 0; left: 0; right: 0;
       height: var(--mobile-bar); background: var(--white);
-      border-bottom: 1px solid var(--line); z-index: 350;
+      border-bottom: 1px solid var(--line); z-index: 400;
       align-items: center; justify-content: space-between; padding: 0 20px;
     }
     .mobile-bar .brand-logo { font-size: 13px; }
-    .mobile-bar .brand-logo__line { display: inline; }
-    .mobile-bar .brand-logo__studio { display: inline; margin-left: 0.3em; letter-spacing: 0.2em; }
+    .mobile-bar .brand-logo__line, .mobile-bar .brand-logo__studio { display: inline; }
+    .mobile-bar .brand-logo__studio { margin-left: 0.3em; letter-spacing: 0.2em; }
 
     .burger {
       width: 40px; height: 40px; border: 1px solid var(--line); background: var(--white);
-      cursor: pointer; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 5px; flex-shrink: 0;
+      cursor: pointer; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 5px; flex-shrink: 0;
     }
     .burger span { width: 16px; height: 1px; background: var(--text); transition: transform 0.35s ease, opacity 0.35s ease; }
     .burger.on span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
     .burger.on span:nth-child(2) { opacity: 0; }
     .burger.on span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
-    .veil { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); z-index: 250; }
+    .veil { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.82); backdrop-filter: blur(5px); z-index: 280; }
     .veil.on { display: block; }
 
+    /* ── Sidebar ─────────────────────────────────────────────── */
     .sidebar {
       position: fixed; top: 0; left: 0; width: var(--nav-w); height: 100vh;
       background: var(--white); border-right: 1px solid var(--line);
-      padding: 72px 44px 48px; display: flex; flex-direction: column;
+      padding: 60px 40px 44px; display: flex; flex-direction: column;
       justify-content: space-between; z-index: 300; overflow-y: auto;
     }
 
-    .nav-list { list-style: none; }
-    .nav-list > li { margin-bottom: 14px; }
-    .nav-list .nav-trigger {
-      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--text-body); display: block; width: 100%;
+    .nav-list { list-style: none; margin-top: 40px; }
+    .nav-list li { margin-bottom: 4px; }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 9px 0; width: 100%;
+      font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-body); border: none; background: none;
+      cursor: pointer; text-align: left;
     }
-    .nav-list .nav-trigger.active { color: var(--text); font-weight: 500; opacity: 1; }
-    .nav-sub { list-style: none; padding-left: 16px; margin-top: 8px; }
-    .nav-sub .nav-trigger { font-size: 10px; letter-spacing: 0.08em; text-transform: lowercase; color: var(--text-light); }
-    .nav-sub .nav-trigger.active { color: var(--text); font-weight: 500; }
+    .nav-item:hover { color: var(--text); opacity: 1; }
+    .nav-item.active { color: var(--text); font-weight: 500; }
+
+    .nav-item-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px; font-weight: 300; color: var(--text-light);
+      opacity: 0.45; min-width: 18px; transition: opacity 0.3s ease;
+    }
+    .nav-item.active .nav-item-num { opacity: 1; color: var(--text); }
 
     .sidebar-meta {
-      padding-top: 32px; border-top: 1px solid var(--line);
+      padding-top: 28px; border-top: 1px solid var(--line);
       font-size: 10px; color: var(--text-light); line-height: 2.1;
     }
-    .sidebar-meta a { display: inline-block; margin-top: 12px; margin-right: 14px; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; }
+    .sidebar-meta a { display: inline-block; margin-top: 10px; margin-right: 12px; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; }
 
-    .app-main { margin-left: var(--nav-w); height: 100vh; position: relative; overflow: hidden; }
-
-    .page {
-      position: absolute; inset: 0; opacity: 0; visibility: hidden; pointer-events: none;
-      overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain;
-      transform: translateY(16px);
-      transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
+    /* ── Fullpage Scroll Container ──────────────────────────── */
+    .fp-wrap {
+      position: fixed; top: 0; left: var(--nav-w); right: 0; bottom: 0;
+      overflow: hidden;
     }
-    .page.is-active { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); z-index: 10; }
-    .page.is-leaving { opacity: 0; transform: translateY(-10px); z-index: 5; }
 
-    .page-inner { min-height: 100%; padding: var(--pad-y) var(--pad-x); padding-bottom: calc(var(--pad-y) + 24px); }
+    .fp-track {
+      width: 100%;
+      will-change: transform;
+      transition: transform var(--fp-dur) var(--ease-fp);
+    }
 
-    .eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-light); margin-bottom: 28px; }
+    /* ── Unified Section Base (ALL 6 sections share this) ────── */
+    .main-sec {
+      width: 100%; height: 100vh;
+      display: flex; align-items: center;
+      overflow: hidden; position: relative;
+    }
+
+    .sec-inner {
+      width: 100%;
+      padding: var(--pad-y) var(--pad-x);
+    }
+
+    /* ══ CORE UNIFIED GRID — identical for every section ══ */
+    .sec-grid {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 7%;
+      align-items: center;
+      width: 100%;
+    }
+
+    /* Left column: sec-num → eyebrow → title → lede → CTA */
+    .sec-left  { /* structural anchor — never shifts */ }
+    /* Right column: visual content */
+    .sec-right { /* content slot */ }
+
+    /* ── Section number (ghost watermark) ── */
+    .sec-num {
+      display: block;
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(2.6rem,4.8vw,4.2rem); letter-spacing: 0.08em;
+      color: var(--text); opacity: 0.08; line-height: 1;
+      margin-bottom: 18px; user-select: none;
+    }
+
+    /* ── Shared typography ── */
+    .eyebrow {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--text-light); margin-bottom: 18px;
+    }
     .display {
       font-family: 'Cormorant Garamond', serif; font-weight: 300;
-      font-size: clamp(2.2rem, 4vw, 3.6rem); letter-spacing: 0.06em;
-      line-height: 1.12; color: var(--text); margin-bottom: 32px;
+      font-size: clamp(1.9rem,3.5vw,3.2rem); letter-spacing: 0.06em;
+      line-height: 1.13; color: var(--text); margin-bottom: 22px;
     }
     .display em { font-style: italic; font-weight: 300; }
-    .lede { max-width: 480px; color: var(--text-body); line-height: 2.05; margin-bottom: 48px; }
 
-    .hero-grid {
-      display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 8%;
-      align-items: center; min-height: min(88vh, 820px);
-    }
+    .lede { color: var(--text-body); line-height: 2; font-size: 13px; margin-bottom: 32px; max-width: 320px; }
 
-    .home-flow { padding-top: 24px; }
-    .home-section {
-      padding: 72px 0;
-      border-top: 1px solid var(--line-soft);
-    }
-    .home-section:first-child { border-top: none; padding-top: 48px; }
-    .home-section-head {
-      display: grid; grid-template-columns: 1fr auto; gap: 24px 40px;
-      align-items: end; margin-bottom: 48px;
-    }
-    .home-section-head .display { margin-bottom: 0; grid-column: 1; }
-    .home-section-head .eyebrow { grid-column: 1; margin-bottom: 0; }
-    .home-section-head .btn-ghost { grid-column: 2; grid-row: 1 / 3; align-self: end; }
-    .home-section-head .home-section-lede {
-      grid-column: 1; max-width: 420px; color: var(--text-body); line-height: 2;
-    }
-    .home-gallery { grid-template-columns: repeat(4, 1fr); }
-    .home-pick { cursor: default; }
-    .home-pick .product-card__spec { display: none; }
-    .home-pick .product-card__tech { margin-bottom: 0; }
+    .sec-cta { display: flex; flex-wrap: wrap; gap: 10px 14px; }
 
-    .home-cat-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
-      background: var(--line); border: 1px solid var(--line);
-    }
-    .home-cat-cell {
-      background: var(--white); padding: 36px 28px; min-height: 160px;
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .home-cat-cell h3 {
-      font-family: 'Cormorant Garamond', serif; font-weight: 300;
-      font-size: 1.35rem; letter-spacing: 0.06em; margin-bottom: 10px;
-    }
-    .home-cat-cell p { font-size: 12px; color: var(--text-body); line-height: 1.8; margin-bottom: 16px; }
-    .home-cat-link { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-light); }
-
-    .home-split {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8%; align-items: center;
-    }
-    .home-split .lede { margin-bottom: 28px; }
-    .home-comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-
-    .home-about-grid {
-      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 10%; align-items: start;
-    }
-    .home-timeline { list-style: none; border-left: 1px solid var(--line); padding-left: 24px; }
-    .home-timeline li { margin-bottom: 22px; }
-    .home-timeline .yr { display: block; font-size: 10px; letter-spacing: 0.2em; color: var(--text-light); margin-bottom: 4px; }
-    .home-timeline .ev { font-size: 13px; color: var(--text-body); line-height: 1.85; }
-
-    .home-lookbook { padding-top: 56px; padding-bottom: 72px; }
-    .home-lookbook .eyebrow { margin-bottom: 32px; }
-    .home-lookbook-frame {
-      height: auto;
-      overflow: visible;
-      background: var(--ph);
-    }
-    .home-lookbook-frame img {
-      position: static;
-      display: block;
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      object-position: center;
-    }
-    .home-lookbook-cap {
-      margin-top: 28px;
-      max-width: 480px;
-      font-size: 11px;
-      color: var(--text-light);
-      letter-spacing: 0.12em;
-      line-height: 1.9;
-    }
-
-    .home-contact {
-      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8%;
-      padding-top: 56px; margin-top: 24px; border-top: 1px solid var(--line);
-    }
-    .home-contact .lbl {
-      font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase;
-      color: var(--text-light); margin-bottom: 12px;
-    }
-    .home-contact p { color: var(--text-body); line-height: 2; font-size: 13px; }
-    .home-credit { margin-top: 48px; font-size: 10px; color: var(--text-light); }
-    .hero-statement {
-      font-family: 'Cormorant Garamond', serif; font-weight: 300;
-      font-size: clamp(1.4rem, 2.5vw, 2rem); line-height: 1.45;
-      color: var(--text-mid); margin-bottom: 40px; max-width: 360px;
-    }
-    .hero-desc { max-width: 340px; color: var(--text-body); line-height: 2.1; margin-bottom: 40px; }
-    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px 20px; }
     .btn-ghost {
       font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
-      border: 1px solid var(--line); padding: 14px 28px; color: var(--text);
+      border: 1px solid var(--line); padding: 13px 26px; color: var(--text);
+      cursor: pointer; background: none; display: inline-block;
     }
-    .btn-ghost:hover { background: var(--text); color: var(--white); opacity: 1; }
-    .hero-visual .frame { height: auto; }
-    .hero-visual .frame img {
-      position: static;
-      display: block;
-      width: 100%;
-      height: auto;
-      max-height: min(78vh, 720px);
-      object-fit: contain;
-    }
-    .hero-caption { margin-top: 24px; max-width: 300px; font-size: 11px; color: var(--text-light); line-height: 1.85; }
+    .btn-ghost:hover { background: var(--text); color: var(--white); border-color: var(--text); opacity: 1; }
 
+    /* ── Image Frame ── */
     .frame { position: relative; background: var(--ph); overflow: hidden; }
-    .frame img {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: contain; object-position: center;
-    }
-    .frame-tag { position: absolute; bottom: 20px; left: 24px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-light); }
-    .ratio-port { aspect-ratio: 3 / 4; }
-    .ratio-sq   { aspect-ratio: 1 / 1; }
-    .ratio-wide { aspect-ratio: 16 / 10; }
-    .ratio-cinema { aspect-ratio: 21 / 9; }
+    .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; }
+    .frame-tag { position: absolute; bottom: 14px; left: 18px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-light); }
+    .ratio-port { aspect-ratio: 3/4; }
+    .ratio-sq   { aspect-ratio: 1/1; }
+    .ratio-wide { aspect-ratio: 16/10; }
 
-    .cat-header {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8%;
-      margin-bottom: 56px; align-items: end;
+    /* ── Content animation — uniform for all sections ── */
+    .sec-left,
+    .sec-right {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
-    .cat-header .display { margin-bottom: 0; }
-    .cat-intro { color: var(--text-body); line-height: 2; max-width: 400px; justify-self: end; }
 
-    .sub-tabs {
-      display: flex; flex-wrap: wrap; gap: 8px 28px;
-      margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--line-soft);
+    .main-sec.is-active .sec-left {
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.7s var(--ease) 0.28s, transform 0.7s var(--ease) 0.28s;
     }
-    .sub-tab { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-light); }
-    .sub-tab.active { color: var(--text); font-weight: 500; }
-    .sub-panel { display: none; animation: panelIn 0.45s var(--ease) forwards; }
-    .sub-panel.is-visible { display: block; }
-    @keyframes panelIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-    .sub-cat-head {
-      display: flex; align-items: baseline; justify-content: space-between;
-      gap: 24px; margin-bottom: 36px;
+    .main-sec.is-active .sec-right {
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.7s var(--ease) 0.44s, transform 0.7s var(--ease) 0.44s;
     }
-    .sub-cat-head h3 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 1.5rem; letter-spacing: 0.08em; }
-    .sub-cat-head p { font-size: 10px; letter-spacing: 0.14em; color: var(--text-light); }
 
-    /* ── Product Gallery Grid ──
-       PC: 4열 → 3열 → 모바일 2열 → 초소형 1열
-       제품 추가 시 <article class="product-card"> 블록 복사 */
-    .product-gallery {
+    /* ── main01: Hero ────────────────────────────────────────── */
+    .hero-statement {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(1.3rem,2.3vw,1.85rem); line-height: 1.5;
+      color: var(--text-mid); margin-bottom: 16px; max-width: 320px;
+    }
+    .hero-desc { font-size: 12px; color: var(--text-body); line-height: 1.95; margin-bottom: 32px; max-width: 310px; }
+
+    .hero-frame {
+      height: min(calc(100vh - var(--pad-y) * 2 - 32px), 680px);
+      aspect-ratio: auto;
+    }
+    .hero-frame img { object-fit: contain; }
+    .hero-caption { margin-top: 14px; font-size: 10px; color: var(--text-light); line-height: 1.8; letter-spacing: 0.06em; }
+
+    /* ── main02: Lookbook ────────────────────────────────────── */
+    .lookbook-lede { font-size: 12px; color: var(--text-body); line-height: 2; max-width: 280px; }
+
+    .lookbook-frame {
+      height: min(calc(100vh - var(--pad-y) * 2 - 20px), 700px);
+      aspect-ratio: auto;
+    }
+    .lookbook-frame img { object-fit: cover; object-position: center top; }
+
+    /* ── main03: Lighting Picks ──────────────────────────────── */
+    .picks-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 32px 24px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px 18px;
     }
 
-    .product-card {
+    .pick-card { display: flex; flex-direction: column; }
+
+    .pick-card__img {
+      height: clamp(100px, 17vh, 162px);
+      aspect-ratio: auto;
+      margin-bottom: 10px;
+    }
+    .pick-card__img img { object-fit: cover; }
+
+    .pick-card__code { font-size: 9px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-light); margin-bottom: 4px; }
+    .pick-card__name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; letter-spacing: 0.05em; color: var(--text); margin-bottom: 4px; line-height: 1.2; }
+    .pick-card__mood { font-size: 11px; color: var(--text-body); line-height: 1.7; }
+    .pick-card__tech { font-size: 10px; color: var(--text-mid); line-height: 1.65; margin-top: 5px; padding-left: 8px; border-left: 1px solid var(--line); }
+
+    /* ── main04: Store / Categories ──────────────────────────── */
+    .cat-cells {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .cat-cell {
+      background: var(--white); padding: 28px 24px;
+      min-height: 140px; display: flex; flex-direction: column;
+      justify-content: space-between;
+    }
+    .cat-cell h3 {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: 1.25rem; letter-spacing: 0.06em; margin-bottom: 6px;
+    }
+    .cat-cell p { font-size: 11px; color: var(--text-body); line-height: 1.75; margin-bottom: 12px; }
+    .cat-cell-link {
+      font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-light);
+      border: none; background: none; cursor: pointer; padding: 0;
+      font-family: inherit; text-align: left;
+    }
+    .cat-cell-link:hover { color: var(--text); opacity: 1; }
+
+    /* ── main05: Components ──────────────────────────────────── */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px 22px;
+      align-items: start;
+    }
+
+    .comp-card { display: flex; flex-direction: column; }
+    .comp-card__img { margin-bottom: 10px; }
+    .comp-card__code { font-size: 9px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-light); margin-bottom: 4px; }
+    .comp-card__name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; letter-spacing: 0.05em; color: var(--text); margin-bottom: 5px; line-height: 1.2; }
+    .comp-card__mood { font-size: 11px; color: var(--text-body); line-height: 1.7; margin-bottom: 5px; }
+    .comp-card__tech { font-size: 10px; color: var(--text-mid); line-height: 1.65; padding-left: 8px; border-left: 1px solid var(--line); }
+
+    /* ── main06: About ───────────────────────────────────────── */
+    .about-right { display: flex; flex-direction: column; gap: 32px; }
+
+    .timeline { list-style: none; border-left: 1px solid var(--line); padding-left: 20px; }
+    .timeline li { margin-bottom: 16px; }
+    .timeline .yr { display: block; font-size: 10px; letter-spacing: 0.2em; color: var(--text-light); margin-bottom: 3px; }
+    .timeline .ev { font-size: 12px; color: var(--text-body); line-height: 1.8; }
+
+    .contact-strip {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+      padding-top: 22px; border-top: 1px solid var(--line-soft);
+    }
+    .contact-strip .lbl { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; }
+    .contact-strip p { color: var(--text-body); line-height: 1.9; font-size: 11px; }
+
+    .about-left-contact { margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--line-soft); }
+    .about-left-contact .lbl { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-light); margin-bottom: 6px; }
+    .about-left-contact p { font-size: 12px; color: var(--text-body); line-height: 1.9; }
+
+    .sec-credit { font-size: 10px; color: var(--text-light); letter-spacing: 0.1em; margin-top: 4px; }
+
+    /* ── Dot Navigation ──────────────────────────────────────── */
+    .page-dots {
+      position: fixed;
+      right: clamp(18px, 2.6vw, 38px);
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 500;
       display: flex; flex-direction: column;
-      border-top: 1px solid var(--line-soft);
-      padding-top: 20px;
+      gap: 18px; align-items: center;
     }
 
-    .product-card__img { margin-bottom: 18px; }
-
-    .product-card__code {
-      font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--text-light); margin-bottom: 6px;
+    .dot {
+      position: relative;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(26,26,26,0.16);
+      border: none; padding: 0; cursor: pointer;
+      transition: background 0.5s var(--ease), transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
     }
-
-    .product-card__name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem; letter-spacing: 0.05em;
-      color: var(--text); margin-bottom: 8px;
+    .dot.active {
+      background: var(--text);
+      transform: scale(1.85);
+      box-shadow: 0 0 0 4px rgba(26,26,26,0.07);
     }
-
-    .product-card__mood {
-      font-size: 12px; color: var(--text-body);
-      line-height: 1.75; margin-bottom: 10px;
+    .dot::after {
+      content: attr(data-label);
+      position: absolute; right: calc(100% + 13px); top: 50%;
+      transform: translateY(-50%);
+      font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-light); white-space: nowrap;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
     }
+    .dot:hover::after { opacity: 1; }
+    .dot.active::after { opacity: 1; color: var(--text); font-weight: 500; }
 
-    .product-card__tech {
-      font-size: 11px; color: var(--text-mid);
-      line-height: 1.7; margin-bottom: 8px;
-      padding-left: 10px; border-left: 1px solid var(--line);
-    }
-
-    .product-card__spec {
-      font-size: 10px; letter-spacing: 0.04em;
-      color: var(--text-light); line-height: 1.85;
-    }
-
-    .platform-focus {
-      display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: 1px; background: var(--line); border: 1px solid var(--line);
-      margin-top: 48px;
-    }
-    .platform-cell {
-      background: var(--white); padding: 44px 36px;
-      min-height: 180px; display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .platform-name { font-size: 10px; font-weight: 500; letter-spacing: 0.26em; text-transform: uppercase; margin-bottom: 14px; }
-    .platform-desc { font-size: 13px; color: var(--text-body); line-height: 1.85; }
-    .platform-link { margin-top: 20px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-light); }
-
-    .platform-contact {
-      margin-top: 72px; padding-top: 48px; border-top: 1px solid var(--line);
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10%;
-    }
-    .platform-contact .lbl { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-light); margin-bottom: 12px; }
-    .platform-contact p { color: var(--text-body); line-height: 2; font-size: 13px; }
-
-    .page-credit { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line-soft); font-size: 10px; color: var(--text-light); }
-
-    /* ── Full-page scroll snap (home) ── */
-    #page-home { scroll-snap-type: y mandatory; }
-
-    .snap-sec {
-      min-height: 100vh;
-      scroll-snap-align: start;
-      padding: var(--pad-y) var(--pad-x);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .snap-sec--hero { justify-content: flex-start; }
-
-    .snap-sec--footer {
-      justify-content: flex-end;
-      padding-bottom: calc(var(--pad-y) + 24px);
-    }
-    .snap-sec--footer .home-contact { margin-top: 0; }
-
-    @media (min-width: 1024px) {
-      :root { --pad-y: 100px; --pad-x: 10%; }
-    }
-
-    @media (max-width: 1400px) and (min-width: 1024px) {
-      .product-gallery { grid-template-columns: repeat(3, 1fr); }
-      .home-gallery { grid-template-columns: repeat(3, 1fr); }
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (min-width: 1280px) {
+      :root { --pad-y: 80px; --pad-x: 8%; }
     }
 
     @media (max-width: 1023px) {
-      :root { --pad-y: 48px; --pad-x: 6%; --nav-w: 0px; }
-      body { font-size: 16px; line-height: 1.85; }
+      :root { --nav-w: 0px; --pad-y: 52px; --pad-x: 6%; }
       .mobile-bar { display: flex; }
       .sidebar {
         transform: translateX(-100%); transition: transform 0.45s var(--ease);
         width: min(300px, 88vw); padding-top: calc(var(--mobile-bar) + 32px);
       }
       .sidebar.open { transform: none; }
-      .app-main {
-        margin-left: 0; padding-top: var(--mobile-bar);
-        height: calc(100dvh - var(--mobile-bar));
-      }
-      .hero-grid { grid-template-columns: 1fr; gap: 36px; min-height: auto; }
-      .hero-statement { max-width: 100%; font-size: 1.35rem; }
-      .hero-desc { max-width: 100%; font-size: 16px; }
-      .hero-visual .frame img { max-height: 50vh; }
-      .hero-grid { min-height: auto; }
-      .home-section { padding: 56px 0; }
-      .home-section:first-child { padding-top: 40px; }
-      .home-flow { padding-top: 12px; }
-      .home-lookbook { padding-top: 32px; padding-bottom: 64px; }
-      .home-lookbook .eyebrow { margin-bottom: 24px; }
-      .home-lookbook-cap { margin-top: 32px; max-width: 100%; font-size: 11px; line-height: 2; }
-      .home-section-head { grid-template-columns: 1fr; gap: 16px; margin-bottom: 36px; }
-      .home-section-head .display { font-size: clamp(1.8rem, 6vw, 2.4rem); }
-      .home-section-head .home-section-lede { max-width: 100%; font-size: 15px; line-height: 1.9; }
-      .home-section-head .btn-ghost { grid-column: 1; grid-row: auto; margin-top: 4px; align-self: start; }
-      .home-cat-cell { padding: 32px 24px; min-height: 140px; }
-      .home-cat-cell h3 { font-size: 1.25rem; }
-      .home-cat-cell p { font-size: 14px; line-height: 1.85; margin-bottom: 20px; }
-      .home-split .display { margin-bottom: 24px; }
-      .home-split .lede { max-width: 100%; font-size: 15px; line-height: 1.9; margin-bottom: 32px; }
-      .home-about-grid .lede { max-width: 100%; font-size: 15px; line-height: 1.9; }
-      .home-timeline { padding-left: 20px; margin-top: 8px; }
-      .home-timeline .ev { font-size: 14px; line-height: 1.85; }
-      .home-contact { gap: 40px; padding-top: 48px; }
-      .home-contact p { font-size: 14px; line-height: 1.9; }
-      .home-gallery { grid-template-columns: repeat(2, 1fr); gap: 24px 16px; }
-      .home-cat-grid { grid-template-columns: 1fr 1fr; }
-      .home-split, .home-about-grid, .home-contact { grid-template-columns: 1fr; gap: 32px; }
-      .home-comp-grid { grid-template-columns: 1fr; }
-      .cat-header { grid-template-columns: 1fr; gap: 16px; }
-      .cat-intro { justify-self: start; font-size: 16px; }
-      .product-gallery { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
-      .product-card__mood { font-size: 14px; }
-      .product-card__spec { font-size: 12px; }
-      .platform-focus, .platform-contact { grid-template-columns: 1fr; }
-      .snap-sec { min-height: 100svh; }
-      .snap-sec--footer { min-height: 100svh; }
+      .fp-wrap { left: 0; top: var(--mobile-bar); bottom: 0; }
+      .main-sec { height: calc(100vh - var(--mobile-bar)); }
+      .sec-grid { grid-template-columns: 1fr; gap: 24px; }
+      .sec-right { order: 2; }
+      .sec-num { font-size: 2.4rem; margin-bottom: 12px; }
+      .display { font-size: clamp(1.65rem,5.5vw,2.3rem); }
+      .lede { max-width: 100%; font-size: 14px; margin-bottom: 22px; }
+      .hero-frame  { height: 38vh; }
+      .lookbook-frame { height: 40vh; }
+      .picks-grid .pick-card__img { height: clamp(80px, 14vh, 130px); }
+      .contact-strip { grid-template-columns: 1fr 1fr; }
+      .page-dots { right: 10px; gap: 13px; }
+      .dot { width: 6px; height: 6px; }
+      .dot::after { display: none; }
     }
 
-    @media (max-width: 520px) {
-      .product-gallery { grid-template-columns: 1fr; }
-      .home-gallery, .home-cat-grid { grid-template-columns: 1fr; }
+    @media (max-width: 620px) {
+      .comp-grid, .cat-cells { grid-template-columns: 1fr; }
+      .contact-strip { grid-template-columns: 1fr; gap: 12px; }
     }
   </style>
 </head>
 <body>
 
+<!-- ── Mobile Top Bar ──────────────────────────────────────── -->
 <header class="mobile-bar">
-  <button class="burger" id="burger" aria-label="메뉴"><span></span><span></span><span></span></button>
-  <button type="button" class="brand-logo nav-trigger" data-page="home">
-    <span class="brand-logo__line">seen<span class="brand-semi">;</span>new</span>
-    <span class="brand-logo__studio">studio</span>
+  <button class="burger" id="burger" aria-label="메뉴">
+    <span></span><span></span><span></span>
+  </button>
+  <button type="button" class="brand-logo nav-item" data-idx="0" style="display:inline-flex;gap:0.3em;align-items:baseline;letter-spacing:0.06em;font-size:13px;">
+    seen<span class="brand-semi">;</span>new&nbsp;<span style="letter-spacing:0.2em;">studio</span>
   </button>
   <div style="width:40px;"></div>
 </header>
 
 <div class="veil" id="veil"></div>
 
+<!-- ── Sidebar ───────────────────────────────────────────────── -->
 <aside class="sidebar" id="sidebar">
   <div>
-    <div class="brand-header">
-      <button type="button" class="brand-logo brand-logo--sidebar nav-trigger" data-page="home">
-        <span class="brand-logo__line">seen<span class="brand-semi">;</span>new</span>
-        <span class="brand-logo__line brand-logo__studio">studio</span>
-      </button>
-      <div class="logo-sub">Lighting · Components</div>
-    </div>
+    <button type="button" class="brand-logo brand-logo--sidebar nav-item" data-idx="0" style="text-align:left;">
+      <span class="brand-logo__line">seen<span class="brand-semi">;</span>new</span>
+      <span class="brand-logo__line brand-logo__studio">studio</span>
+    </button>
+    <div class="logo-sub">Lighting · Components</div>
 
-    <!-- ══ NAV: HOME / LIGHTING / COMPONENTS / CURATION PLATFORM ══ -->
-    <nav class="nav-block" style="margin-top:48px;">
+    <nav style="margin-top:44px;">
       <ul class="nav-list">
-        <li><button type="button" class="nav-trigger active" data-page="home">Home</button></li>
-        <li>
-          <button type="button" class="nav-trigger" data-page="lighting" data-sub="wall">Lighting</button>
-          <ul class="nav-sub">
-            <li><button type="button" class="nav-trigger" data-page="lighting" data-sub="wall">wall</button></li>
-            <li><button type="button" class="nav-trigger" data-page="lighting" data-sub="bar">line bar</button></li>
-            <li><button type="button" class="nav-trigger" data-page="lighting" data-sub="portable">portable</button></li>
-            <li><button type="button" class="nav-trigger" data-page="lighting" data-sub="down">down light</button></li>
-          </ul>
-        </li>
-        <li>
-          <button type="button" class="nav-trigger" data-page="components" data-sub="charger">Components</button>
-          <ul class="nav-sub">
-            <li><button type="button" class="nav-trigger" data-page="components" data-sub="charger">pull-out usb ports</button></li>
-          </ul>
-        </li>
-        <li><button type="button" class="nav-trigger" data-page="platform">Curation Platform</button></li>
+        <li><button type="button" class="nav-item active" data-idx="0"><span class="nav-item-num">01</span>Hero</button></li>
+        <li><button type="button" class="nav-item" data-idx="1"><span class="nav-item-num">02</span>Lookbook</button></li>
+        <li><button type="button" class="nav-item" data-idx="2"><span class="nav-item-num">03</span>Lighting</button></li>
+        <li><button type="button" class="nav-item" data-idx="3"><span class="nav-item-num">04</span>Store</button></li>
+        <li><button type="button" class="nav-item" data-idx="4"><span class="nav-item-num">05</span>Components</button></li>
+        <li><button type="button" class="nav-item" data-idx="5"><span class="nav-item-num">06</span>About</button></li>
       </ul>
     </nav>
   </div>
@@ -495,616 +441,439 @@
   </div>
 </aside>
 
-<div class="app-main" id="app">
+<!-- ── Dot Navigation ────────────────────────────────────────── -->
+<nav class="page-dots" id="pageDots" aria-label="섹션 네비게이션">
+  <button class="dot active" data-idx="0" data-label="Hero"       aria-label="01 Hero"></button>
+  <button class="dot"        data-idx="1" data-label="Lookbook"   aria-label="02 Lookbook"></button>
+  <button class="dot"        data-idx="2" data-label="Lighting"   aria-label="03 Lighting"></button>
+  <button class="dot"        data-idx="3" data-label="Store"      aria-label="04 Store"></button>
+  <button class="dot"        data-idx="4" data-label="Components" aria-label="05 Components"></button>
+  <button class="dot"        data-idx="5" data-label="About"      aria-label="06 About"></button>
+</nav>
 
-  <!-- ══════════════════════════════════════ HOME ══════════════════════════════════════ -->
-  <section class="page is-active" id="page-home" data-page="home">
+<!-- ── Fullpage Wrapper ──────────────────────────────────────── -->
+<div class="fp-wrap" id="fpWrap">
+  <div class="fp-track" id="fpTrack">
 
-    <!-- ① Hero -->
-    <div class="snap-sec snap-sec--hero">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">B2B · Lifestyle Curation</p>
-          <div class="brand-logo brand-logo--hero">
-            <span class="brand-logo__line">seen<span class="brand-semi">;</span>new</span>
-            <span class="brand-logo__line brand-logo__studio">studio</span>
+    <!-- ════════════════════════════════════════════════
+         main01 — Hero
+    ════════════════════════════════════════════════ -->
+    <section class="main-sec" id="main01" data-index="0">
+      <div class="sec-inner">
+        <div class="sec-grid">
+
+          <div class="sec-left">
+            <span class="sec-num" aria-hidden="true">01</span>
+            <p class="eyebrow">B2B · Lifestyle Curation</p>
+            <div class="brand-logo brand-logo--hero">
+              <span class="brand-logo__line">seen<span class="brand-semi">;</span>new</span>
+              <span class="brand-logo__line brand-logo__studio">studio</span>
+            </div>
+            <p class="hero-statement">공간의 빛과 가구 빌트인 컴포넌트를 큐레이션합니다.</p>
+            <p class="hero-desc">seen;new studio는 LIGHTING과 COMPONENTS — 조명과 가구용 pull-out USB port — 에 집중하는 B2B 큐레이션 플랫폼입니다.</p>
+            <div class="sec-cta">
+              <button type="button" class="btn-ghost nav-item" data-idx="2">Lighting Lineup</button>
+              <button type="button" class="btn-ghost nav-item" data-idx="4">Components</button>
+            </div>
           </div>
-          <p class="hero-statement">공간의 빛과 가구 빌트인 컴포넌트를 큐레이션합니다.</p>
-          <p class="hero-desc">seen;new studio는 LIGHTING과 COMPONENTS — 조명과 가구용 pull-out USB port — 에 집중하는 B2B 큐레이션 플랫폼입니다.</p>
-          <div class="hero-cta">
-            <button type="button" class="btn-ghost nav-trigger" data-page="lighting" data-sub="wall">Lighting Lineup</button>
-            <button type="button" class="btn-ghost nav-trigger" data-page="components" data-sub="charger">Components Lineup</button>
+
+          <div class="sec-right">
+            <div class="frame hero-frame">
+              <img src="image/curated-space-01.png" alt="Curated Space 01 — seen;new studio">
+              <span class="frame-tag">Curated Space · 01</span>
+            </div>
+            <p class="hero-caption">Light and built-in detail — curated for furniture makers and spatial designers.</p>
           </div>
+
         </div>
-        <div class="hero-visual">
-          <div class="frame">
-            <img src="image/curated-space-01.png" alt="Curated Space 01 — seen;new studio">
-            <span class="frame-tag">Curated Space · 01</span>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════
+         main02 — Lookbook
+    ════════════════════════════════════════════════ -->
+    <section class="main-sec" id="main02" data-index="1">
+      <div class="sec-inner">
+        <div class="sec-grid">
+
+          <div class="sec-left">
+            <span class="sec-num" aria-hidden="true">02</span>
+            <p class="eyebrow">Lookbook</p>
+            <h2 class="display">A Study in<br><em>Refined Illumination</em></h2>
+            <p class="lede lookbook-lede">공간의 빛을 정제하다. seen;new studio의 첫 번째 룩북은 빛과 소재, 디테일의 조화를 담습니다.</p>
+            <p style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-light);">Lookbook · 01 · 2026</p>
           </div>
-          <p class="hero-caption">Light and built-in detail — curated for furniture makers and spatial designers.</p>
-        </div>
-      </div>
-    </div>
 
-    <!-- ② Lookbook -->
-    <div class="snap-sec">
-      <p class="eyebrow">Lookbook</p>
-      <div class="frame home-lookbook-frame">
-        <img src="image/lookbook-01.png" alt="Lookbook 01 — seen;new studio, a study in refined illumination">
-      </div>
-      <p class="home-lookbook-cap">Lookbook · 01 · A study in refined illumination</p>
-    </div>
-
-    <!-- ③ Lighting Picks -->
-    <div class="snap-sec">
-      <div class="home-section-head">
-        <p class="eyebrow">Lighting</p>
-        <h2 class="display">Curated <em>Picks</em></h2>
-        <p class="home-section-lede">가구 빌트인에 최적화된 벽부등·바·포터블 — 공간 연출용 시그니처 모델.</p>
-        <button type="button" class="btn-ghost nav-trigger" data-page="lighting" data-sub="wall">Full lineup</button>
-      </div>
-      <div class="product-gallery home-gallery">
-
-        <article class="product-card home-pick">
-          <div class="product-card__img frame ratio-port">
-            <img src="images/lighting/wall_04.jpg" alt="Bagua" onerror="this.onerror=null;this.src='product8.jpg'">
+          <div class="sec-right">
+            <div class="frame lookbook-frame">
+              <img src="image/lookbook-01.png" alt="Lookbook 01 — seen;new studio, a study in refined illumination">
+              <span class="frame-tag">Lookbook · 01</span>
+            </div>
           </div>
-          <p class="product-card__code">LT_WL_LSFR03_SW_(MT~)</p>
-          <h4 class="product-card__name">Bagua</h4>
-          <p class="product-card__mood">스틸과 아크릴의 레이어드 구조. 컨템포러리 인테리어 벽면.</p>
-          <p class="product-card__tech">Steel + Acrylic · DC12V</p>
-        </article>
 
-        <article class="product-card home-pick">
-          <div class="product-card__img frame ratio-port">
-            <img src="images/lighting/wall_01.jpg" alt="Treel" onerror="this.onerror=null;this.src='product5.jpg'">
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════
+         main03 — Lighting Picks
+    ════════════════════════════════════════════════ -->
+    <section class="main-sec" id="main03" data-index="2">
+      <div class="sec-inner">
+        <div class="sec-grid">
+
+          <div class="sec-left">
+            <span class="sec-num" aria-hidden="true">03</span>
+            <p class="eyebrow">Lighting</p>
+            <h2 class="display">Curated<br><em>Picks</em></h2>
+            <p class="lede">가구 빌트인에 최적화된 벽부등·바·포터블 — 공간 연출용 시그니처 모델.</p>
+            <div class="sec-cta">
+              <button type="button" class="btn-ghost nav-item" data-idx="3">All Categories</button>
+            </div>
           </div>
-          <p class="product-card__code">LT_WL_CYJR01_(OW~)</p>
-          <h4 class="product-card__name">Treel</h4>
-          <p class="product-card__mood">오크·월넛 결을 살린 미니멀 벽부등. 침실 헤드보드 연출.</p>
-          <p class="product-card__tech">Metal · DC12V · 3,000K</p>
-        </article>
 
-        <article class="product-card home-pick">
-          <div class="product-card__img frame ratio-sq">
-            <img src="images/lighting/bar_01.jpg" alt="BIC-100" onerror="this.onerror=null;this.src='product23.jpg'">
+          <div class="sec-right">
+            <div class="picks-grid">
+
+              <article class="pick-card">
+                <div class="pick-card__img frame">
+                  <img src="images/lighting/wall_04.jpg" alt="Bagua" onerror="this.onerror=null;this.style.display='none'">
+                </div>
+                <p class="pick-card__code">LT_WL_LSFR03_SW_(MT~)</p>
+                <h4 class="pick-card__name">Bagua</h4>
+                <p class="pick-card__mood">스틸과 아크릴의 레이어드 구조. 컨템포러리 벽면.</p>
+                <p class="pick-card__tech">Steel + Acrylic · DC12V</p>
+              </article>
+
+              <article class="pick-card">
+                <div class="pick-card__img frame">
+                  <img src="images/lighting/wall_01.jpg" alt="Treel" onerror="this.onerror=null;this.style.display='none'">
+                </div>
+                <p class="pick-card__code">LT_WL_CYJR01_(OW~)</p>
+                <h4 class="pick-card__name">Treel</h4>
+                <p class="pick-card__mood">오크·월넛 결을 살린 미니멀 벽부등.</p>
+                <p class="pick-card__tech">Metal · DC12V · 3,000K</p>
+              </article>
+
+              <article class="pick-card">
+                <div class="pick-card__img frame">
+                  <img src="images/lighting/bar_01.jpg" alt="BIC-100" onerror="this.onerror=null;this.style.display='none'">
+                </div>
+                <p class="pick-card__code">SMT-BIC-100</p>
+                <h4 class="pick-card__name">BIC-100</h4>
+                <p class="pick-card__mood">USB-C Fast 충전 일체형 면발광 바.</p>
+                <p class="pick-card__tech">Aluminium + PC · DC12V</p>
+              </article>
+
+              <article class="pick-card">
+                <div class="pick-card__img frame">
+                  <img src="images/lighting/portable_01.jpg" alt="Neo" onerror="this.onerror=null;this.style.display='none'">
+                </div>
+                <p class="pick-card__code">LT_PB_CRMGS01_(B,W)</p>
+                <h4 class="pick-card__name">Neo</h4>
+                <p class="pick-card__mood">리튬이온 무선 포터블. 침대 사이드·아웃도어.</p>
+                <p class="pick-card__tech">PC · Lithium-ion · 4,000K / 6,000K</p>
+              </article>
+
+            </div>
           </div>
-          <p class="product-card__code">SMT-BIC-100</p>
-          <h4 class="product-card__name">BIC-100</h4>
-          <p class="product-card__mood">USB-C Fast 충전 일체형 면발광 바. 드레스룸·상부장.</p>
-          <p class="product-card__tech">Aluminium + PC · DC12V</p>
-        </article>
 
-        <article class="product-card home-pick">
-          <div class="product-card__img frame ratio-port">
-            <img src="images/lighting/portable_01.jpg" alt="Neo" onerror="this.onerror=null;this.src='product25.jpg'">
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════
+         main04 — Store / Lighting Categories
+    ════════════════════════════════════════════════ -->
+    <section class="main-sec" id="main04" data-index="3">
+      <div class="sec-inner">
+        <div class="sec-grid">
+
+          <div class="sec-left">
+            <span class="sec-num" aria-hidden="true">04</span>
+            <p class="eyebrow">Store</p>
+            <h2 class="display">Lighting<br><em>Categories</em></h2>
+            <p class="lede">Wall · Line Bar · Portable · Down Light — 4가지 카테고리의 전체 조명 라인업.</p>
           </div>
-          <p class="product-card__code">LT_PB_CRMGS01_(B,W)</p>
-          <h4 class="product-card__name">Neo</h4>
-          <p class="product-card__mood">리튬이온 무선 포터블. 침대 사이드·아웃도어 겸용.</p>
-          <p class="product-card__tech">PC · Lithium-ion · 4,000K / 6,000K</p>
-        </article>
 
-      </div>
-    </div>
+          <div class="sec-right">
+            <div class="cat-cells">
 
-    <!-- ④ Lighting Categories -->
-    <div class="snap-sec">
-      <div class="home-section-head">
-        <p class="eyebrow">Store</p>
-        <h2 class="display">Lighting <em>Categories</em></h2>
-      </div>
-      <div class="home-cat-grid">
-        <div class="home-cat-cell">
-          <div>
-            <h3>Wall</h3>
-            <p>18 models · DC12V 가구 빌트인 벽부등</p>
+              <div class="cat-cell">
+                <div>
+                  <h3>Wall</h3>
+                  <p>18 models · DC12V 가구 빌트인 벽부등</p>
+                </div>
+                <button type="button" class="cat-cell-link">View lineup →</button>
+              </div>
+
+              <div class="cat-cell">
+                <div>
+                  <h3>Line Bar</h3>
+                  <p>BIC-100 · 면발광 LED BAR · 길이 커스텀</p>
+                </div>
+                <button type="button" class="cat-cell-link">View lineup →</button>
+              </div>
+
+              <div class="cat-cell">
+                <div>
+                  <h3>Portable</h3>
+                  <p>Neo · Raon · 무선·테이블 겸용</p>
+                </div>
+                <button type="button" class="cat-cell-link">View lineup →</button>
+              </div>
+
+              <div class="cat-cell">
+                <div>
+                  <h3>Down Light</h3>
+                  <p>Apex · COB 사각 매입형</p>
+                </div>
+                <button type="button" class="cat-cell-link">View lineup →</button>
+              </div>
+
+            </div>
           </div>
-          <button type="button" class="home-cat-link nav-trigger" data-page="lighting" data-sub="wall">View lineup →</button>
+
         </div>
-        <div class="home-cat-cell">
-          <div>
-            <h3>Line Bar</h3>
-            <p>BIC-100 · 면발광 LED BAR · 길이 커스텀</p>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════
+         main05 — Components
+    ════════════════════════════════════════════════ -->
+    <section class="main-sec" id="main05" data-index="4">
+      <div class="sec-inner">
+        <div class="sec-grid">
+
+          <div class="sec-left">
+            <span class="sec-num" aria-hidden="true">05</span>
+            <p class="eyebrow">Components</p>
+            <h2 class="display">Pull-out<br><em>USB Ports</em></h2>
+            <p class="lede">가구용 snap-in spring clip 구조. 침대·소파·데스크 빌트인 충전 모듈 — B2B OEM 납품.</p>
+            <div class="sec-cta">
+              <button type="button" class="btn-ghost">Components Lineup</button>
+            </div>
           </div>
-          <button type="button" class="home-cat-link nav-trigger" data-page="lighting" data-sub="bar">View lineup →</button>
-        </div>
-        <div class="home-cat-cell">
-          <div>
-            <h3>Portable</h3>
-            <p>Neo · Raon · 무선·테이블 겸용</p>
+
+          <div class="sec-right">
+            <div class="comp-grid">
+
+              <article class="comp-card">
+                <div class="comp-card__img frame ratio-wide">
+                  <img src="images/components/comp_01.jpg" alt="Multi Charger" onerror="this.onerror=null;this.style.display='none'">
+                </div>
+                <p class="comp-card__code">CG_MTM_G(G~)-01</p>
+                <h4 class="comp-card__name">Multi Charger</h4>
+                <p class="comp-card__mood">데스크·헤드보드 일체형 멀티 충전 허브.</p>
+                <p class="comp-card__tech">Snap-in spring clip · DC 12V · cert JA040451-24001</p>
+              </article>
+
+              <article class="comp-card">
+                <div class="comp-card__img frame ratio-port">
+                  <img src="images/components/comp_02.jpg" alt="One Port" onerror="this.onerror=null;this.style.display='none'">
+                </div>
+                <p class="comp-card__code">CG_1PM_G_01~02</p>
+                <h4 class="comp-card__name">One Port</h4>
+                <p class="comp-card__mood">슬림 1구 pull-out. 사이드 테이블·수납장 매립.</p>
+                <p class="comp-card__tech">Spring clip · 12V 2A · 24W Max</p>
+              </article>
+
+            </div>
           </div>
-          <button type="button" class="home-cat-link nav-trigger" data-page="lighting" data-sub="portable">View lineup →</button>
+
         </div>
-        <div class="home-cat-cell">
-          <div>
-            <h3>Down Light</h3>
-            <p>Apex · COB 사각 매입형</p>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════
+         main06 — About
+    ════════════════════════════════════════════════ -->
+    <section class="main-sec" id="main06" data-index="5">
+      <div class="sec-inner">
+        <div class="sec-grid">
+
+          <div class="sec-left">
+            <span class="sec-num" aria-hidden="true">06</span>
+            <p class="eyebrow">About</p>
+            <h2 class="display">LTS ·<br><em>seen;new</em></h2>
+            <p class="lede">2012년 설립 이래 가구·침대 빌트인 조명과 충전 컴포넌트를 개발·납품해 온 LTS의 B2B 큐레이션 스튜디오입니다.</p>
+            <div class="about-left-contact">
+              <p class="lbl">Studio</p>
+              <p>seen;new studio · LTS CORP.<br>서울시 금천구 벚꽃로 244<br>벽산디지털밸리5차 1505호</p>
+            </div>
           </div>
-          <button type="button" class="home-cat-link nav-trigger" data-page="lighting" data-sub="down">View lineup →</button>
-        </div>
-      </div>
-    </div>
 
-    <!-- ⑤ Components -->
-    <div class="snap-sec">
-      <div class="home-split">
-        <div>
-          <p class="eyebrow">Components</p>
-          <h2 class="display">Pull-out<br><em>USB Ports</em></h2>
-          <p class="lede">가구용 snap-in spring clip 구조. 침대·소파·데스크 빌트인 충전 모듈 — B2B OEM 납품.</p>
-          <button type="button" class="btn-ghost nav-trigger" data-page="components" data-sub="charger">Components lineup</button>
-        </div>
-        <div class="home-comp-grid">
-          <article class="product-card home-pick">
-            <div class="product-card__img frame ratio-wide">
-              <img src="images/components/comp_01.jpg" alt="Multi Charger" onerror="this.onerror=null;this.src='product1.jpg'">
+          <div class="sec-right">
+            <div class="about-right">
+
+              <ul class="timeline">
+                <li><span class="yr">2012</span><span class="ev">LTS CORP. 설립 · LED 가구 조명 사업 시작</span></li>
+                <li><span class="yr">2018</span><span class="ev">Pull-out USB Port 개발 · 가구 빌트인 충전 모듈 본격화</span></li>
+                <li><span class="yr">2022</span><span class="ev">Wall Lighting 18종 라인업 완성 · B2B 납품 확대</span></li>
+                <li><span class="yr">2026</span><span class="ev">seen;new studio · Lighting & Components 큐레이션 플랫폼</span></li>
+              </ul>
+
+              <div class="contact-strip">
+                <div>
+                  <p class="lbl">Contact</p>
+                  <p>T 070-4306-3500<br>010-7763-3500<br>F 0504-268-4392<br>Weekdays 09 – 18</p>
+                </div>
+                <div>
+                  <p class="lbl">Focus</p>
+                  <p>Lighting · Components<br>B2B Curation · OEM<br>Domestic furniture brands</p>
+                </div>
+                <div>
+                  <p class="lbl">Partners</p>
+                  <p>금성침대 · 세양침대<br>한샘 · 말타니</p>
+                </div>
+              </div>
+
+              <p class="sec-credit">© LTS CORP. · seen;new studio</p>
+
             </div>
-            <p class="product-card__code">CG_MTM_G(G~)-01</p>
-            <h4 class="product-card__name">Multi Charger</h4>
-            <p class="product-card__mood">데스크·헤드보드 일체형 멀티 충전 허브.</p>
-          </article>
-          <article class="product-card home-pick">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/components/comp_02.jpg" alt="One Port" onerror="this.onerror=null;this.src='product2.jpg'">
-            </div>
-            <p class="product-card__code">CG_1PM_G_01~02</p>
-            <h4 class="product-card__name">One Port</h4>
-            <p class="product-card__mood">슬림 1구 pull-out. 사이드 테이블·수납장 매립.</p>
-          </article>
-        </div>
-      </div>
-    </div>
-
-    <!-- ⑥ About -->
-    <div class="snap-sec">
-      <div class="home-about-grid">
-        <div>
-          <p class="eyebrow">About</p>
-          <h2 class="display">LTS · seen;new</h2>
-          <p class="lede">2012년 설립 이래 가구·침대 빌트인 조명과 충전 컴포넌트를 개발·납품해 온 LTS(엘티에스)의 B2B 큐레이션 스튜디오입니다. 금성침대·세양침대·한샘·말타니 등 국내 주요 가구 브랜드와 협업합니다.</p>
-          <button type="button" class="btn-ghost nav-trigger" data-page="platform">Curation Platform</button>
-        </div>
-        <ul class="home-timeline">
-          <li><span class="yr">2012</span><span class="ev">LTS CORP. 설립 · LED 가구 조명 사업 시작</span></li>
-          <li><span class="yr">2018</span><span class="ev">Pull-out USB Port 개발 · 가구 빌트인 충전 모듈 본격화</span></li>
-          <li><span class="yr">2022</span><span class="ev">Wall Lighting 18종 라인업 완성 · B2B 납품 확대</span></li>
-          <li><span class="yr">2026</span><span class="ev">seen;new studio · Lighting & Components 큐레이션 플랫폼</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- ⑦ Contact / Footer — min-height 100vh, 하단 정렬로 잘림 방지 -->
-    <div class="snap-sec snap-sec--footer">
-      <footer class="home-contact">
-        <div>
-          <p class="lbl">Studio</p>
-          <p>seen;new studio · LTS CORP.<br>서울시 금천구 벚꽃로 244<br>벽산디지털밸리5차 1505호</p>
-        </div>
-        <div>
-          <p class="lbl">Contact</p>
-          <p>T 070-4306-3500 · 010-7763-3500<br>F 0504-268-4392<br>Weekly 09:00 – 18:00</p>
-        </div>
-        <div>
-          <p class="lbl">Focus</p>
-          <p>Lighting · Components<br>B2B Curation · OEM<br>Domestic furniture brands</p>
-        </div>
-        <p class="home-credit" style="grid-column:1/-1;">© LTS CORP. · seen;new studio</p>
-      </footer>
-    </div>
-
-  </section>
-
-  <!-- ══════════════════════════════════════ LIGHTING ══════════════════════════════════════ -->
-  <section class="page" id="page-lighting" data-page="lighting">
-    <div class="page-inner">
-      <div class="cat-header">
-        <h2 class="display">lighting</h2>
-        <p class="cat-intro">전 제품 라인업 — Wall, Line Bar, Portable, Down Light. 이미지·스펙·감성 카피는 각 product-card 주석을 참고해 수정하세요.</p>
-      </div>
-
-      <div class="sub-tabs" role="tablist">
-        <button type="button" class="sub-tab active" data-sub="wall">Wall</button>
-        <button type="button" class="sub-tab" data-sub="bar">Line Bar</button>
-        <button type="button" class="sub-tab" data-sub="portable">Portable</button>
-        <button type="button" class="sub-tab" data-sub="down">Down Light</button>
-      </div>
-
-      <!-- ── WALL: 18 products ── -->
-      <div class="sub-panel is-visible" data-sub="wall">
-        <div class="sub-cat-head"><h3>Wall Lighting</h3><p>DC12V · 18 models</p></div>
-        <div class="product-gallery">
-
-          <!-- [제품 카드] img src · name · mood · spec 수정 -->
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_01.jpg" alt="Treel" onerror="this.onerror=null;this.src='product5.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_CYJR01_(OW~)</p>
-            <h4 class="product-card__name">Treel</h4>
-            <p class="product-card__mood">오크·월넛 결을 살린 미니멀 벽부등. 침실 헤드보드와 사이드 테이블 연출.</p>
-            <p class="product-card__tech">Metal · DC12V · 가구 빌트인 벽부등 · 3,000K 고정</p>
-            <p class="product-card__spec">LED 1W · Oak / Walnut · 180×83mm · DC12V · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_02.jpg" alt="Sunny 01" onerror="this.onerror=null;this.src='product6.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_LSFR01_GW_(W~)</p>
-            <h4 class="product-card__name">Sunny 01</h4>
-            <p class="product-card__mood">골드 프레임의 아치형 실루엣. 호텔 스위트룸 벽면 포인트 조명.</p>
-            <p class="product-card__tech">Steel · E26 소켓 · DC12V · Gold finish</p>
-            <p class="product-card__spec">E26 5W · Gold · 281.5×209mm · DC12V · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_03.jpg" alt="Sunny 02" onerror="this.onerror=null;this.src='product7.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_LSFR02_SW</p>
-            <h4 class="product-card__name">Sunny 02</h4>
-            <p class="product-card__mood">실버 톤의 비대칭 곡선. 모던 거실·복도 간접 조명.</p>
-            <p class="product-card__tech">Steel · E26 소켓 · DC12V · Silver finish</p>
-            <p class="product-card__spec">E26 5W · Silver · 197.5×285mm · DC12V · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_04.jpg" alt="Bagua" onerror="this.onerror=null;this.src='product8.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_LSFR03_SW_(MT~)</p>
-            <h4 class="product-card__name">Bagua</h4>
-            <p class="product-card__mood">스틸과 아크릴의 레이어드 구조. 컨템포러리 인테리어 벽면.</p>
-            <p class="product-card__tech">Steel + Acrylic · Silver + Option · DC12V</p>
-            <p class="product-card__spec">E26 5W · 180×295mm · DC12V · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_05.jpg" alt="Campanula" onerror="this.onerror=null;this.src='product9.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_LSFR04_GW_CR</p>
-            <h4 class="product-card__name">Campanula</h4>
-            <p class="product-card__mood">글래스 쉐이드의 부드러운 확산광. 침실·라운지 무드 조명.</p>
-            <p class="product-card__tech">Steel + Glass · E26 소켓 · DC12V · Gold + Caramel finish</p>
-            <p class="product-card__spec">E26 5W · Gold / Caramel · 150×235mm · DC12V · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_06.jpg" alt="WM" onerror="this.onerror=null;this.src='product10.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_SQFU/D01_GW</p>
-            <h4 class="product-card__name">WM</h4>
-            <p class="product-card__mood">화이트 스퀘어의 클린한 벽면 조명. 미니멀 가구 브랜드 협업.</p>
-            <p class="product-card__tech">Steel · E26 소켓 · DC12V · White finish</p>
-            <p class="product-card__spec">E26 5W · White · 120×80mm · DC12V · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_07.jpg" alt="Case" onerror="this.onerror=null;this.src='product11.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_SQFU/D02_BW</p>
-            <h4 class="product-card__name">Case</h4>
-            <p class="product-card__mood">블랙 알루미늄의 컴팩트 사각형. 붙박이·헤드보드 매립형.</p>
-            <p class="product-card__tech">Metal · LED built-in · DC12V · Black finish</p>
-            <p class="product-card__spec">LED 3W · Black · 71×86mm · DC12V · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_08.jpg" alt="Viva Circle" onerror="this.onerror=null;this.src='product12.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_CRCYJBS01_(WW~)</p>
-            <h4 class="product-card__name">Viva Circle</h4>
-            <p class="product-card__mood">링 형태의 균형 잡힌 빛. 호텔·레지던스 벽면 시그니처.</p>
-            <p class="product-card__tech">Metal · LED built-in · DC12V · Ring form factor</p>
-            <p class="product-card__spec">LED 3/7W · 146×72mm · DC12V · 6,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_09.jpg" alt="Viva" onerror="this.onerror=null;this.src='product13.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_SQCYJBS01_(BW~)</p>
-            <h4 class="product-card__name">Viva</h4>
-            <p class="product-card__mood">직사각 프레임의 모던 라인. 거실·서재 벽부등.</p>
-            <p class="product-card__tech">Metal · LED built-in · DC12V · Rectangular frame</p>
-            <p class="product-card__spec">LED 3/7W · 208×86mm · DC12V · 3,000K / 6,500K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_10.jpg" alt="Viva Ring" onerror="this.onerror=null;this.src='product14.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_SQCYJBS02_(BW~)</p>
-            <h4 class="product-card__name">Viva Ring</h4>
-            <p class="product-card__mood">사각 외곽의 링 디테일. 침대 프레임 일체형 조명.</p>
-            <p class="product-card__tech">Metal · LED built-in · DC12V · Square ring detail</p>
-            <p class="product-card__spec">LED 3/7W · 208×86mm · DC12V · 3,000K / 6,500K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_11.jpg" alt="Eclipse" onerror="this.onerror=null;this.src='product15.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_CRFB01_(BW~)</p>
-            <h4 class="product-card__name">Eclipse</h4>
-            <p class="product-card__mood">슬림 디스크의 일식 형태. 간접광 위주의 침실 조명.</p>
-            <p class="product-card__tech">Metal · LED built-in · DC12V · Slim disc form</p>
-            <p class="product-card__spec">LED 5W · 150×50mm · DC12V · 3,000K / 6,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_12.jpg" alt="Goat" onerror="this.onerror=null;this.src='product16.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_SQFB01(WW~)</p>
-            <h4 class="product-card__name">Goat</h4>
-            <p class="product-card__mood">정사각 확산 패널. 균일한 면조명이 필요한 공간.</p>
-            <p class="product-card__tech">Metal · LED built-in · DC12V · Square diffusion panel</p>
-            <p class="product-card__spec">LED 3W · 150×150mm · DC12V · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_13.jpg" alt="Bazel 01·02" onerror="this.onerror=null;this.src='product17.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_SQCYJS(01,02)</p>
-            <h4 class="product-card__name">Bazel 01 · 02</h4>
-            <p class="product-card__mood">소형 스퀘어 2종. 헤드보드·수납장 포인트.</p>
-            <p class="product-card__tech">Metal · LED built-in · DC12V · Compact square 2 sizes</p>
-            <p class="product-card__spec">LED 1.5W · 100×100 / 100×180mm · DC12V · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_14.jpg" alt="Bazel 03" onerror="this.onerror=null;this.src='product18.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_SQCYJS(03)</p>
-            <h4 class="product-card__name">Bazel 03</h4>
-            <p class="product-card__mood">샌드 니켈 마감의 미니멀 스퀘어.</p>
-            <p class="product-card__tech">Metal · Sand Nickel finish · DC12V · LED built-in</p>
-            <p class="product-card__spec">LED 3W · Sand Nickel · 110×110×56mm · DC12V · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_15.jpg" alt="Lake" onerror="this.onerror=null;this.src='product19.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_CRFR01</p>
-            <h4 class="product-card__name">Lake</h4>
-            <p class="product-card__mood">원형 디스크의 수면 같은 확산광. 라운지·침실.</p>
-            <p class="product-card__tech">Metal + Acrylic · Silver finish · DC12V · Circular disc</p>
-            <p class="product-card__spec">LED 3W · Silver · Ø138×70mm · DC12V · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_16.jpg" alt="Wave" onerror="this.onerror=null;this.src='product20.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_CRFR02</p>
-            <h4 class="product-card__name">Wave</h4>
-            <p class="product-card__mood">Lake 시리즈의 웨이브 변형. 곡선 실루엣.</p>
-            <p class="product-card__tech">Metal + Acrylic · Silver finish · DC12V · Wave silhouette</p>
-            <p class="product-card__spec">LED 3W · Silver · Ø138×70mm · DC12V · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_17.jpg" alt="Pupil" onerror="this.onerror=null;this.src='product21.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_CRFR01_ACW</p>
-            <h4 class="product-card__name">Pupil</h4>
-            <p class="product-card__mood">초슬림 원형. 매립·표면 부착 겸용.</p>
-            <p class="product-card__tech">Transparent + Gold · LED built-in · ACW · Ultra-slim disc</p>
-            <p class="product-card__spec">LED 2W · Gold · Ø150×36.5mm · ACW · 3,000K</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/wall_18.jpg" alt="Crown" onerror="this.onerror=null;this.src='product22.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_CRFR02_ACW</p>
-            <h4 class="product-card__name">Crown</h4>
-            <p class="product-card__mood">타원 크라운 실루엣. 프리미엄 침대·호텔 벽면.</p>
-            <p class="product-card__tech">Black + Gold · LED built-in · ACW · Crown silhouette</p>
-            <p class="product-card__spec">LED 2.5W · Black / Gold · Ø150×230mm · ACW · 3,000K</p>
-          </article>
-
-        </div>
-      </div>
-
-      <!-- ── LINE BAR ── -->
-      <div class="sub-panel" data-sub="bar">
-        <div class="sub-cat-head"><h3>Line Bar</h3><p>BIC-100 · 면발광 LED BAR</p></div>
-        <div class="product-gallery">
-          <article class="product-card">
-            <div class="product-card__img frame ratio-sq">
-              <img src="images/lighting/bar_01.jpg" alt="BIC-100" onerror="this.onerror=null;this.src='product23.jpg'">
-            </div>
-            <p class="product-card__code">SMT-BIC-100</p>
-            <h4 class="product-card__name">BIC-100</h4>
-            <p class="product-card__mood">USB-C Fast 충전 일체형 면발광 바. 드레스룸·주방 상부장.</p>
-            <p class="product-card__tech">Aluminium + PC · USB-C Fast · Bidirectional control · DC12V</p>
-            <p class="product-card__spec">DC12V 3A · USB-C Fast · 4,000K · Bidirectional control</p>
-          </article>
-          <article class="product-card">
-            <div class="product-card__img frame ratio-sq">
-              <img src="images/lighting/bar_02.jpg" alt="LED BAR" onerror="this.onerror=null;this.src='product24.jpg'">
-            </div>
-            <p class="product-card__code">LT_BAR_(500~)/(4K,6K)</p>
-            <h4 class="product-card__name">면발광 LED BAR</h4>
-            <p class="product-card__mood">길이 커스텀 가능한 균일 면발광. 수납·선반 하부 조명.</p>
-            <p class="product-card__tech">면발광 LED BAR · 길이 커스텀 · DC12V · 유백 / 투명</p>
-            <p class="product-card__spec">LED 1.5–7W · 500–1200mm · 유백 / 투명 · DC12V · 4,000K / 6,000K</p>
-          </article>
-        </div>
-      </div>
-
-      <!-- ── PORTABLE ── -->
-      <div class="sub-panel" data-sub="portable">
-        <div class="sub-cat-head"><h3>Portable</h3><p>Neo · Raon</p></div>
-        <div class="product-gallery">
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/portable_01.jpg" alt="Neo" onerror="this.onerror=null;this.src='product25.jpg'">
-            </div>
-            <p class="product-card__code">LT_PB_CRMGS01_(B,W)</p>
-            <h4 class="product-card__name">Neo</h4>
-            <p class="product-card__mood">리튬이온 무선 포터블. 침대 사이드·아웃도어 겸용.</p>
-            <p class="product-card__tech">PC · Lithium-ion · 무선 포터블 · Black / White</p>
-            <p class="product-card__spec">LED 4.5W · 76×43.5mm · 4,000K / 6,000K</p>
-          </article>
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/lighting/portable_02.jpg" alt="Raon" onerror="this.onerror=null;this.src='product26.jpg'">
-            </div>
-            <p class="product-card__code">LT_WL_CYMGS02_WC</p>
-            <h4 class="product-card__name">Raon</h4>
-            <p class="product-card__mood">DC12V 테이블 램프. 가구 빌트인·탈착 겸용.</p>
-            <p class="product-card__tech">Metal · LED built-in · DC12V · White finish</p>
-            <p class="product-card__spec">LED 4W · White · DC12V · 3,000K</p>
-          </article>
-        </div>
-      </div>
-
-      <!-- ── DOWN LIGHT ── -->
-      <div class="sub-panel" data-sub="down">
-        <div class="sub-cat-head"><h3>Down Light</h3><p>Apex · 사각매입조명</p></div>
-        <div class="product-gallery">
-          <article class="product-card">
-            <div class="product-card__img frame ratio-wide">
-              <img src="images/lighting/down_01.jpg" alt="Apex" onerror="this.onerror=null;this.src='product27.jpg'">
-            </div>
-            <p class="product-card__code">LT_RL_SQRTS_01_W40</p>
-            <h4 class="product-card__name">Apex</h4>
-            <p class="product-card__mood">COB 사각 매입형. 천장·가구 상부 recessed 조명.</p>
-            <p class="product-card__tech">Die Casting · COB · 24° beam · DC12V · Square recessed</p>
-            <p class="product-card__spec">COB 15W · 24° · 105×105×68mm · 타공 95mm · DC12V · 4,000K</p>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════ COMPONENTS ══════════════════════════════════════ -->
-  <section class="page" id="page-components" data-page="components">
-    <div class="page-inner">
-      <div class="cat-header">
-        <h2 class="display">components</h2>
-        <p class="cat-intro">가구용 매립형 Pull-out USB Port · B2B 지명원. snap-in spring clip 구조 등 기술 스펙은 product-card__tech 영역을 수정하세요.</p>
-      </div>
-
-      <div class="sub-tabs" role="tablist">
-        <button type="button" class="sub-tab active" data-sub="charger">Pull-out USB Ports</button>
-      </div>
-
-      <div class="sub-panel is-visible" data-sub="charger">
-        <div class="sub-cat-head"><h3>Pull-out USB Ports</h3><p>가구 빌트인 충전 모듈 · full lineup</p></div>
-        <div class="product-gallery">
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-wide">
-              <img src="images/components/comp_01.jpg" alt="Multi Charger" onerror="this.onerror=null;this.src='product1.jpg'">
-            </div>
-            <p class="product-card__code">CG_MTM_G(G~)-01</p>
-            <h4 class="product-card__name">Multi Charger</h4>
-            <p class="product-card__mood">데스크·침대 헤드보드 일체형 멀티 충전 허브. B2B 대량 납품.</p>
-            <p class="product-card__tech">Snap-in spring clip · cert JA040451-24001 · cable 1.7M</p>
-            <p class="product-card__spec">DC 12V / 0.2A · cable 1.7M · cert JA040451-24001</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/components/comp_02.jpg" alt="One Port" onerror="this.onerror=null;this.src='product2.jpg'">
-            </div>
-            <p class="product-card__code">CG_1PM_G_01~02</p>
-            <h4 class="product-card__name">One Port</h4>
-            <p class="product-card__mood">슬림 1구 pull-out. 사이드 테이블·수납장 매립.</p>
-            <p class="product-card__tech">Snap-in spring clip · cert R-R-tEc-SMT-UCA-01 · step 2.2W / 1.1W / 0.8W</p>
-            <p class="product-card__spec">12V 2A · 24W Max · 64×64×32mm · cert R-R-tEc-SMT-UCA-01</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/components/comp_03.jpg" alt="Two Port 01" onerror="this.onerror=null;this.src='product3.jpg'">
-            </div>
-            <p class="product-card__code">CG_2PT_G_01</p>
-            <h4 class="product-card__name">Two Port 01</h4>
-            <p class="product-card__mood">듀얼 USB 2구. 침대·소파 armrest 빌트인.</p>
-            <p class="product-card__tech">Spring clip · cert R-R-tEc-SMT-UCCA-02 · Dual USB</p>
-            <p class="product-card__spec">12V 2A · 24W Max · 64×64×32mm · cert R-R-tEc-SMT-UCCA-02</p>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__img frame ratio-port">
-              <img src="images/components/comp_04.jpg" alt="Two Port 02" onerror="this.onerror=null;this.src='product4.jpg'">
-            </div>
-            <p class="product-card__code">CG_2PT_G_02</p>
-            <h4 class="product-card__name">Two Port 02</h4>
-            <p class="product-card__mood">고출력 2구. 프리미엄 가구 브랜드 OEM.</p>
-            <p class="product-card__tech">36W Max · Customization available · cert R-R-tEc-SMT-UCCA-02</p>
-            <p class="product-card__spec">12V 3A · 36W Max · Custom cut-out · cert R-R-tEc-SMT-UCCA-02</p>
-          </article>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════ CURATION PLATFORM ══════════════════════════════════════ -->
-  <section class="page" id="page-platform" data-page="platform">
-    <div class="page-inner">
-      <p class="eyebrow">Curation Platform</p>
-      <h2 class="display">seen;new<br><em>studio</em></h2>
-      <p class="lede">LIGHTING과 COMPONENTS에 집중하는 B2B 큐레이션 플랫폼. 금성침대·세양침대·한샘·말타니 등 국내 주요 가구·침대 브랜드 납품 실적.</p>
-
-      <div class="platform-focus">
-        <div class="platform-cell">
-          <div>
-            <p class="platform-name">Lighting</p>
-            <p class="platform-desc">Wall 18종 · Line Bar · Portable · Down Light — 공간 조명 전 라인업.</p>
           </div>
-          <p class="platform-link"><button type="button" class="nav-trigger" data-page="lighting" data-sub="wall" style="opacity:1;">View lineup →</button></p>
-        </div>
-        <div class="platform-cell">
-          <div>
-            <p class="platform-name">Components</p>
-            <p class="platform-desc">Pull-out USB Port · snap-in spring clip · 가구 빌트인 충전 모듈.</p>
-          </div>
-          <p class="platform-link"><button type="button" class="nav-trigger" data-page="components" data-sub="charger" style="opacity:1;">View lineup →</button></p>
+
         </div>
       </div>
+    </section>
 
-      <div class="platform-contact">
-        <div>
-          <p class="lbl">Studio</p>
-          <p>seen;new studio · LTS CORP.<br>대표 김영균<br>서울시 금천구 벚꽃로 244<br>벽산디지털밸리5차 1505호</p>
-        </div>
-        <div>
-          <p class="lbl">Contact</p>
-          <p>T 070-4306-3500 · 010-7763-3500<br>F 0504-268-4392<br>Weekly 09:00 – 18:00</p>
-        </div>
-      </div>
+  </div><!-- /fp-track -->
+</div><!-- /fp-wrap -->
 
-      <p class="page-credit">© LTS CORP. · seen;new studio</p>
-    </div>
-  </section>
-
-</div>
 
 <script>
 (function () {
-  var TRANSITION_MS = 550;
-  var currentPage = 'home';
-  var sidebar = document.getElementById('sidebar');
-  var burger = document.getElementById('burger');
-  var veil = document.getElementById('veil');
-  var isTransitioning = false;
+  'use strict';
 
+  /* ─── Config ──────────────────────────────────────────────── */
+  var SEC_COUNT      = 6;
+  var ANIM_MS        = 1000;   /* matches --fp-dur */
+  var WHEEL_THRESH   = 70;     /* accumulated deltaY to trigger page change */
+  var WHEEL_RESET_MS = 220;    /* ms of silence before resetting accumulator */
+  var CONTENT_IN_MS  = 540;    /* delay before adding .is-active to new section */
+  var CONTENT_OUT_MS = 760;    /* delay before removing .is-active from old section */
+
+  /* ─── References ──────────────────────────────────────────── */
+  var fpWrap   = document.getElementById('fpWrap');
+  var fpTrack  = document.getElementById('fpTrack');
+  var sections = document.querySelectorAll('.main-sec');
+  var dots     = document.querySelectorAll('.dot');
+  var navItems = document.querySelectorAll('.nav-item[data-idx]');
+  var sidebar  = document.getElementById('sidebar');
+  var burger   = document.getElementById('burger');
+  var veil     = document.getElementById('veil');
+
+  /* ─── State ───────────────────────────────────────────────── */
+  var current     = 0;
+  var isAnimating = false;
+  var wheelAccum  = 0;
+  var wheelTimer  = null;
+  var touchStartY = 0;
+
+  /* ─── Core: go to section by index ───────────────────────── */
+  function goTo(idx) {
+    if (isAnimating) return;
+    idx = Math.max(0, Math.min(SEC_COUNT - 1, idx));
+    if (idx === current) return;
+
+    isAnimating = true;
+    var prev = current;
+    current  = idx;
+
+    /* Translate track — pixel-based for cross-browser accuracy */
+    var h = fpWrap.clientHeight;
+    fpTrack.style.transform = 'translateY(-' + (idx * h) + 'px)';
+
+    /* Sync dots */
+    dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+
+    /* Sync sidebar nav */
+    navItems.forEach(function (n) {
+      n.classList.toggle('active', parseInt(n.getAttribute('data-idx'), 10) === idx);
+    });
+
+    /* Content: fade out old section */
+    setTimeout(function () {
+      sections[prev].classList.remove('is-active');
+    }, CONTENT_OUT_MS);
+
+    /* Content: fade in new section */
+    setTimeout(function () {
+      sections[idx].classList.add('is-active');
+    }, CONTENT_IN_MS);
+
+    /* Unlock */
+    setTimeout(function () { isAnimating = false; }, ANIM_MS + 120);
+  }
+
+  /* Expose globally so inline btn onclick can call goTo */
+  window.goTo = goTo;
+
+  /* ─── Wheel — luxury smooth delta accumulator ─────────────── */
+  fpWrap.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    if (isAnimating) return;
+
+    /* Normalise delta — trackpad can give very small values */
+    var delta = e.deltaY;
+    if (e.deltaMode === 1) delta *= 28;   /* line mode */
+    if (e.deltaMode === 2) delta *= 500;  /* page mode */
+
+    wheelAccum += delta;
+
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(function () { wheelAccum = 0; }, WHEEL_RESET_MS);
+
+    if (Math.abs(wheelAccum) >= WHEEL_THRESH) {
+      var dir = wheelAccum > 0 ? 1 : -1;
+      wheelAccum = 0;
+      clearTimeout(wheelTimer);
+      goTo(current + dir);
+    }
+  }, { passive: false });
+
+  /* ─── Touch ───────────────────────────────────────────────── */
+  fpWrap.addEventListener('touchstart', function (e) {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  fpWrap.addEventListener('touchend', function (e) {
+    var dy = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(dy) > 44) goTo(current + (dy > 0 ? 1 : -1));
+  }, { passive: true });
+
+  /* ─── Keyboard ────────────────────────────────────────────── */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'ArrowUp'   || e.key === 'PageUp')   { e.preventDefault(); goTo(current - 1); }
+  });
+
+  /* ─── Dot clicks ──────────────────────────────────────────── */
+  dots.forEach(function (d) {
+    d.addEventListener('click', function () {
+      goTo(parseInt(d.getAttribute('data-idx'), 10));
+    });
+  });
+
+  /* ─── Sidebar / nav-item clicks ──────────────────────────── */
+  navItems.forEach(function (n) {
+    n.addEventListener('click', function () {
+      var idx = parseInt(n.getAttribute('data-idx'), 10);
+      if (!isNaN(idx)) goTo(idx);
+      closeMenu();
+    });
+  });
+
+  /* ─── Resize: recalculate track position ─────────────────── */
+  window.addEventListener('resize', function () {
+    fpTrack.style.transition = 'none';
+    fpTrack.style.transform  = 'translateY(-' + (current * fpWrap.clientHeight) + 'px)';
+    requestAnimationFrame(function () {
+      fpTrack.style.transition = '';
+    });
+  });
+
+  /* ─── Mobile menu ─────────────────────────────────────────── */
   function closeMenu() {
     sidebar.classList.remove('open');
     burger.classList.remove('on');
@@ -1112,104 +881,21 @@
   }
 
   burger.addEventListener('click', function () {
-    sidebar.classList.contains('open') ? closeMenu() : (sidebar.classList.add('open'), burger.classList.add('on'), veil.classList.add('on'));
+    if (sidebar.classList.contains('open')) {
+      closeMenu();
+    } else {
+      sidebar.classList.add('open');
+      burger.classList.add('on');
+      veil.classList.add('on');
+    }
   });
   veil.addEventListener('click', closeMenu);
 
-  function setSubPanel(pageEl, subId) {
-    if (!pageEl || !subId) return;
-    pageEl.querySelectorAll('.sub-tab').forEach(function (t) {
-      t.classList.toggle('active', t.getAttribute('data-sub') === subId);
-    });
-    pageEl.querySelectorAll('.sub-panel').forEach(function (p) {
-      p.classList.toggle('is-visible', p.getAttribute('data-sub') === subId);
-    });
-  }
+  /* ─── Initial section entrance ───────────────────────────── */
+  setTimeout(function () {
+    sections[0].classList.add('is-active');
+  }, 180);
 
-  function updateNav(pageId, subId) {
-    document.querySelectorAll('.nav-trigger[data-page]').forEach(function (btn) {
-      var match = btn.getAttribute('data-page') === pageId;
-      var btnSub = btn.getAttribute('data-sub');
-      if (subId && btnSub) btn.classList.toggle('active', match && btnSub === subId);
-      else if (!btnSub) btn.classList.toggle('active', match && (pageId === 'home' || pageId === 'platform' || !subId));
-      else btn.classList.toggle('active', false);
-    });
-    if (pageId === 'lighting' || pageId === 'components') {
-      document.querySelectorAll('.nav-trigger[data-page="' + pageId + '"]:not([data-sub])').forEach(function (b) { b.classList.add('active'); });
-    }
-  }
-
-  function navigate(pageId, subId, pushHash) {
-    if (isTransitioning || !pageId) return;
-    var next = document.getElementById('page-' + pageId);
-    if (!next) return;
-
-    if (currentPage === pageId && subId) {
-      setSubPanel(next, subId);
-      updateNav(pageId, subId);
-      next.scrollTop = 0;
-      if (pushHash !== false) history.replaceState({ page: pageId, sub: subId }, '', '#' + pageId + '/' + subId);
-      closeMenu();
-      return;
-    }
-    if (currentPage === pageId) {
-      if (pageId === 'home') { next.scrollTop = 0; closeMenu(); }
-      return;
-    }
-
-    isTransitioning = true;
-    var prev = document.getElementById('page-' + currentPage);
-    if (prev) { prev.classList.add('is-leaving'); prev.classList.remove('is-active'); }
-
-    if (subId) setSubPanel(next, subId);
-    else {
-      var first = next.querySelector('.sub-tab');
-      if (first) setSubPanel(next, first.getAttribute('data-sub'));
-    }
-
-    next.scrollTop = 0;
-    next.classList.add('is-active');
-    setTimeout(function () { if (prev) prev.classList.remove('is-leaving'); isTransitioning = false; }, TRANSITION_MS);
-
-    currentPage = pageId;
-    var tab = next.querySelector('.sub-tab.active');
-    updateNav(pageId, subId || (tab ? tab.getAttribute('data-sub') : null));
-    closeMenu();
-    if (pushHash !== false) history.replaceState({ page: pageId, sub: subId || '' }, '', '#' + pageId + (subId ? '/' + subId : ''));
-  }
-
-  document.querySelectorAll('.nav-trigger[data-page]').forEach(function (btn) {
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      navigate(btn.getAttribute('data-page'), btn.getAttribute('data-sub') || null);
-    });
-  });
-
-  document.querySelectorAll('.page').forEach(function (pageEl) {
-    pageEl.querySelectorAll('.sub-tab').forEach(function (tab) {
-      tab.addEventListener('click', function () {
-        var subId = tab.getAttribute('data-sub');
-        setSubPanel(pageEl, subId);
-        updateNav(pageEl.getAttribute('data-page'), subId);
-        pageEl.scrollTop = 0;
-        history.replaceState({ page: pageEl.getAttribute('data-page'), sub: subId }, '', '#' + pageEl.getAttribute('data-page') + '/' + subId);
-      });
-    });
-  });
-
-  function parseHash() {
-    var raw = (location.hash || '#home').replace(/^#/, '');
-    var p = raw.split('/');
-    return { page: p[0] || 'home', sub: p[1] || null };
-  }
-
-  window.addEventListener('hashchange', function () { var h = parseHash(); navigate(h.page, h.sub, false); });
-
-  var initial = parseHash();
-  if (initial.page !== 'home') {
-    document.getElementById('page-home').classList.remove('is-active');
-    navigate(initial.page, initial.sub, false);
-  } else history.replaceState({ page: 'home', sub: '' }, '', '#home');
 })();
 </script>
 </body>
