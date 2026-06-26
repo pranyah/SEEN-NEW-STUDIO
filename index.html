@@ -353,6 +353,26 @@
 
     .page-credit { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line-soft); font-size: 10px; color: var(--text-light); }
 
+    /* ── Full-page scroll snap (home) ── */
+    #page-home { scroll-snap-type: y mandatory; }
+
+    .snap-sec {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      padding: var(--pad-y) var(--pad-x);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .snap-sec--hero { justify-content: flex-start; }
+
+    .snap-sec--footer {
+      justify-content: flex-end;
+      padding-bottom: calc(var(--pad-y) + 24px);
+    }
+    .snap-sec--footer .home-contact { margin-top: 0; }
+
     @media (min-width: 1024px) {
       :root { --pad-y: 100px; --pad-x: 10%; }
     }
@@ -410,6 +430,8 @@
       .product-card__mood { font-size: 14px; }
       .product-card__spec { font-size: 12px; }
       .platform-focus, .platform-contact { grid-template-columns: 1fr; }
+      .snap-sec { min-height: 100svh; }
+      .snap-sec--footer { min-height: 100svh; }
     }
 
     @media (max-width: 520px) {
@@ -477,7 +499,9 @@
 
   <!-- ══════════════════════════════════════ HOME ══════════════════════════════════════ -->
   <section class="page is-active" id="page-home" data-page="home">
-    <div class="page-inner">
+
+    <!-- ① Hero -->
+    <div class="snap-sec snap-sec--hero">
       <div class="hero-grid">
         <div class="hero-copy">
           <p class="eyebrow">B2B · Lifestyle Curation</p>
@@ -500,170 +524,175 @@
           <p class="hero-caption">Light and built-in detail — curated for furniture makers and spatial designers.</p>
         </div>
       </div>
+    </div>
 
-      <div class="home-flow">
+    <!-- ② Lookbook -->
+    <div class="snap-sec">
+      <p class="eyebrow">Lookbook</p>
+      <div class="frame home-lookbook-frame">
+        <img src="image/lookbook-01.png" alt="Lookbook 01 — seen;new studio, a study in refined illumination">
+      </div>
+      <p class="home-lookbook-cap">Lookbook · 01 · A study in refined illumination</p>
+    </div>
 
-        <section class="home-section home-lookbook">
-          <p class="eyebrow">Lookbook</p>
-          <div class="frame home-lookbook-frame">
-            <img src="image/lookbook-01.png" alt="Lookbook 01 — seen;new studio, a study in refined illumination">
+    <!-- ③ Lighting Picks -->
+    <div class="snap-sec">
+      <div class="home-section-head">
+        <p class="eyebrow">Lighting</p>
+        <h2 class="display">Curated <em>Picks</em></h2>
+        <p class="home-section-lede">가구 빌트인에 최적화된 벽부등·바·포터블 — 공간 연출용 시그니처 모델.</p>
+        <button type="button" class="btn-ghost nav-trigger" data-page="lighting" data-sub="wall">Full lineup</button>
+      </div>
+      <div class="product-gallery home-gallery">
+
+        <article class="product-card home-pick">
+          <div class="product-card__img frame ratio-port">
+            <img src="images/lighting/wall_04.jpg" alt="Bagua" onerror="this.onerror=null;this.src='product8.jpg'">
           </div>
-          <p class="home-lookbook-cap">Lookbook · 01 · A study in refined illumination</p>
-        </section>
+          <p class="product-card__code">LT_WL_LSFR03_SW_(MT~)</p>
+          <h4 class="product-card__name">Bagua</h4>
+          <p class="product-card__mood">스틸과 아크릴의 레이어드 구조. 컨템포러리 인테리어 벽면.</p>
+          <p class="product-card__tech">Steel + Acrylic · DC12V</p>
+        </article>
 
-        <section class="home-section">
-          <div class="home-section-head">
-            <p class="eyebrow">Lighting</p>
-            <h2 class="display">Curated <em>Picks</em></h2>
-            <p class="home-section-lede">가구 빌트인에 최적화된 벽부등·바·포터블 — 공간 연출용 시그니처 모델.</p>
-            <button type="button" class="btn-ghost nav-trigger" data-page="lighting" data-sub="wall">Full lineup</button>
+        <article class="product-card home-pick">
+          <div class="product-card__img frame ratio-port">
+            <img src="images/lighting/wall_01.jpg" alt="Treel" onerror="this.onerror=null;this.src='product5.jpg'">
           </div>
-          <div class="product-gallery home-gallery">
+          <p class="product-card__code">LT_WL_CYJR01_(OW~)</p>
+          <h4 class="product-card__name">Treel</h4>
+          <p class="product-card__mood">오크·월넛 결을 살린 미니멀 벽부등. 침실 헤드보드 연출.</p>
+          <p class="product-card__tech">Metal · DC12V · 3,000K</p>
+        </article>
 
-            <article class="product-card home-pick">
-              <div class="product-card__img frame ratio-port">
-                <img src="images/lighting/wall_04.jpg" alt="Bagua" onerror="this.onerror=null;this.src='product8.jpg'">
-              </div>
-              <p class="product-card__code">LT_WL_LSFR03_SW_(MT~)</p>
-              <h4 class="product-card__name">Bagua</h4>
-              <p class="product-card__mood">스틸과 아크릴의 레이어드 구조. 컨템포러리 인테리어 벽면.</p>
-              <p class="product-card__tech">Steel + Acrylic · DC12V</p>
-            </article>
-
-            <article class="product-card home-pick">
-              <div class="product-card__img frame ratio-port">
-                <img src="images/lighting/wall_01.jpg" alt="Treel" onerror="this.onerror=null;this.src='product5.jpg'">
-              </div>
-              <p class="product-card__code">LT_WL_CYJR01_(OW~)</p>
-              <h4 class="product-card__name">Treel</h4>
-              <p class="product-card__mood">오크·월넛 결을 살린 미니멀 벽부등. 침실 헤드보드 연출.</p>
-              <p class="product-card__tech">Metal · DC12V · 3,000K</p>
-            </article>
-
-            <article class="product-card home-pick">
-              <div class="product-card__img frame ratio-sq">
-                <img src="images/lighting/bar_01.jpg" alt="BIC-100" onerror="this.onerror=null;this.src='product23.jpg'">
-              </div>
-              <p class="product-card__code">SMT-BIC-100</p>
-              <h4 class="product-card__name">BIC-100</h4>
-              <p class="product-card__mood">USB-C Fast 충전 일체형 면발광 바. 드레스룸·상부장.</p>
-              <p class="product-card__tech">Aluminium + PC · DC12V</p>
-            </article>
-
-            <article class="product-card home-pick">
-              <div class="product-card__img frame ratio-port">
-                <img src="images/lighting/portable_01.jpg" alt="Neo" onerror="this.onerror=null;this.src='product25.jpg'">
-              </div>
-              <p class="product-card__code">LT_PB_CRMGS01_(B,W)</p>
-              <h4 class="product-card__name">Neo</h4>
-              <p class="product-card__mood">리튬이온 무선 포터블. 침대 사이드·아웃도어 겸용.</p>
-              <p class="product-card__tech">PC · Lithium-ion · 4,000K / 6,000K</p>
-            </article>
-
+        <article class="product-card home-pick">
+          <div class="product-card__img frame ratio-sq">
+            <img src="images/lighting/bar_01.jpg" alt="BIC-100" onerror="this.onerror=null;this.src='product23.jpg'">
           </div>
-        </section>
+          <p class="product-card__code">SMT-BIC-100</p>
+          <h4 class="product-card__name">BIC-100</h4>
+          <p class="product-card__mood">USB-C Fast 충전 일체형 면발광 바. 드레스룸·상부장.</p>
+          <p class="product-card__tech">Aluminium + PC · DC12V</p>
+        </article>
 
-        <section class="home-section">
-          <div class="home-section-head">
-            <p class="eyebrow">Store</p>
-            <h2 class="display">Lighting <em>Categories</em></h2>
+        <article class="product-card home-pick">
+          <div class="product-card__img frame ratio-port">
+            <img src="images/lighting/portable_01.jpg" alt="Neo" onerror="this.onerror=null;this.src='product25.jpg'">
           </div>
-          <div class="home-cat-grid">
-            <div class="home-cat-cell">
-              <div>
-                <h3>Wall</h3>
-                <p>18 models · DC12V 가구 빌트인 벽부등</p>
-              </div>
-              <button type="button" class="home-cat-link nav-trigger" data-page="lighting" data-sub="wall">View lineup →</button>
-            </div>
-            <div class="home-cat-cell">
-              <div>
-                <h3>Line Bar</h3>
-                <p>BIC-100 · 면발광 LED BAR · 길이 커스텀</p>
-              </div>
-              <button type="button" class="home-cat-link nav-trigger" data-page="lighting" data-sub="bar">View lineup →</button>
-            </div>
-            <div class="home-cat-cell">
-              <div>
-                <h3>Portable</h3>
-                <p>Neo · Raon · 무선·테이블 겸용</p>
-              </div>
-              <button type="button" class="home-cat-link nav-trigger" data-page="lighting" data-sub="portable">View lineup →</button>
-            </div>
-            <div class="home-cat-cell">
-              <div>
-                <h3>Down Light</h3>
-                <p>Apex · COB 사각 매입형</p>
-              </div>
-              <button type="button" class="home-cat-link nav-trigger" data-page="lighting" data-sub="down">View lineup →</button>
-            </div>
-          </div>
-        </section>
-
-        <section class="home-section">
-          <div class="home-split">
-            <div>
-              <p class="eyebrow">Components</p>
-              <h2 class="display">Pull-out<br><em>USB Ports</em></h2>
-              <p class="lede">가구용 snap-in spring clip 구조. 침대·소파·데스크 빌트인 충전 모듈 — B2B OEM 납품.</p>
-              <button type="button" class="btn-ghost nav-trigger" data-page="components" data-sub="charger">Components lineup</button>
-            </div>
-            <div class="home-comp-grid">
-              <article class="product-card home-pick">
-                <div class="product-card__img frame ratio-wide">
-                  <img src="images/components/comp_01.jpg" alt="Multi Charger" onerror="this.onerror=null;this.src='product1.jpg'">
-                </div>
-                <p class="product-card__code">CG_MTM_G(G~)-01</p>
-                <h4 class="product-card__name">Multi Charger</h4>
-                <p class="product-card__mood">데스크·헤드보드 일체형 멀티 충전 허브.</p>
-              </article>
-              <article class="product-card home-pick">
-                <div class="product-card__img frame ratio-port">
-                  <img src="images/components/comp_02.jpg" alt="One Port" onerror="this.onerror=null;this.src='product2.jpg'">
-                </div>
-                <p class="product-card__code">CG_1PM_G_01~02</p>
-                <h4 class="product-card__name">One Port</h4>
-                <p class="product-card__mood">슬림 1구 pull-out. 사이드 테이블·수납장 매립.</p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section class="home-section">
-          <div class="home-about-grid">
-            <div>
-              <p class="eyebrow">About</p>
-              <h2 class="display">LTS · seen;new</h2>
-              <p class="lede">2012년 설립 이래 가구·침대 빌트인 조명과 충전 컴포넌트를 개발·납품해 온 LTS(엘티에스)의 B2B 큐레이션 스튜디오입니다. 금성침대·세양침대·한샘·말타니 등 국내 주요 가구 브랜드와 협업합니다.</p>
-              <button type="button" class="btn-ghost nav-trigger" data-page="platform">Curation Platform</button>
-            </div>
-            <ul class="home-timeline">
-              <li><span class="yr">2012</span><span class="ev">LTS CORP. 설립 · LED 가구 조명 사업 시작</span></li>
-              <li><span class="yr">2018</span><span class="ev">Pull-out USB Port 개발 · 가구 빌트인 충전 모듈 본격화</span></li>
-              <li><span class="yr">2022</span><span class="ev">Wall Lighting 18종 라인업 완성 · B2B 납품 확대</span></li>
-              <li><span class="yr">2026</span><span class="ev">seen;new studio · Lighting & Components 큐레이션 플랫폼</span></li>
-            </ul>
-          </div>
-        </section>
-
-        <footer class="home-contact">
-          <div>
-            <p class="lbl">Studio</p>
-            <p>seen;new studio · LTS CORP.<br>서울시 금천구 벚꽃로 244<br>벽산디지털밸리5차 1505호</p>
-          </div>
-          <div>
-            <p class="lbl">Contact</p>
-            <p>T 070-4306-3500 · 010-7763-3500<br>F 0504-268-4392<br>Weekly 09:00 – 18:00</p>
-          </div>
-          <div>
-            <p class="lbl">Focus</p>
-            <p>Lighting · Components<br>B2B Curation · OEM<br>Domestic furniture brands</p>
-          </div>
-          <p class="home-credit" style="grid-column:1/-1;">© LTS CORP. · seen;new studio</p>
-        </footer>
+          <p class="product-card__code">LT_PB_CRMGS01_(B,W)</p>
+          <h4 class="product-card__name">Neo</h4>
+          <p class="product-card__mood">리튬이온 무선 포터블. 침대 사이드·아웃도어 겸용.</p>
+          <p class="product-card__tech">PC · Lithium-ion · 4,000K / 6,000K</p>
+        </article>
 
       </div>
     </div>
+
+    <!-- ④ Lighting Categories -->
+    <div class="snap-sec">
+      <div class="home-section-head">
+        <p class="eyebrow">Store</p>
+        <h2 class="display">Lighting <em>Categories</em></h2>
+      </div>
+      <div class="home-cat-grid">
+        <div class="home-cat-cell">
+          <div>
+            <h3>Wall</h3>
+            <p>18 models · DC12V 가구 빌트인 벽부등</p>
+          </div>
+          <button type="button" class="home-cat-link nav-trigger" data-page="lighting" data-sub="wall">View lineup →</button>
+        </div>
+        <div class="home-cat-cell">
+          <div>
+            <h3>Line Bar</h3>
+            <p>BIC-100 · 면발광 LED BAR · 길이 커스텀</p>
+          </div>
+          <button type="button" class="home-cat-link nav-trigger" data-page="lighting" data-sub="bar">View lineup →</button>
+        </div>
+        <div class="home-cat-cell">
+          <div>
+            <h3>Portable</h3>
+            <p>Neo · Raon · 무선·테이블 겸용</p>
+          </div>
+          <button type="button" class="home-cat-link nav-trigger" data-page="lighting" data-sub="portable">View lineup →</button>
+        </div>
+        <div class="home-cat-cell">
+          <div>
+            <h3>Down Light</h3>
+            <p>Apex · COB 사각 매입형</p>
+          </div>
+          <button type="button" class="home-cat-link nav-trigger" data-page="lighting" data-sub="down">View lineup →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑤ Components -->
+    <div class="snap-sec">
+      <div class="home-split">
+        <div>
+          <p class="eyebrow">Components</p>
+          <h2 class="display">Pull-out<br><em>USB Ports</em></h2>
+          <p class="lede">가구용 snap-in spring clip 구조. 침대·소파·데스크 빌트인 충전 모듈 — B2B OEM 납품.</p>
+          <button type="button" class="btn-ghost nav-trigger" data-page="components" data-sub="charger">Components lineup</button>
+        </div>
+        <div class="home-comp-grid">
+          <article class="product-card home-pick">
+            <div class="product-card__img frame ratio-wide">
+              <img src="images/components/comp_01.jpg" alt="Multi Charger" onerror="this.onerror=null;this.src='product1.jpg'">
+            </div>
+            <p class="product-card__code">CG_MTM_G(G~)-01</p>
+            <h4 class="product-card__name">Multi Charger</h4>
+            <p class="product-card__mood">데스크·헤드보드 일체형 멀티 충전 허브.</p>
+          </article>
+          <article class="product-card home-pick">
+            <div class="product-card__img frame ratio-port">
+              <img src="images/components/comp_02.jpg" alt="One Port" onerror="this.onerror=null;this.src='product2.jpg'">
+            </div>
+            <p class="product-card__code">CG_1PM_G_01~02</p>
+            <h4 class="product-card__name">One Port</h4>
+            <p class="product-card__mood">슬림 1구 pull-out. 사이드 테이블·수납장 매립.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑥ About -->
+    <div class="snap-sec">
+      <div class="home-about-grid">
+        <div>
+          <p class="eyebrow">About</p>
+          <h2 class="display">LTS · seen;new</h2>
+          <p class="lede">2012년 설립 이래 가구·침대 빌트인 조명과 충전 컴포넌트를 개발·납품해 온 LTS(엘티에스)의 B2B 큐레이션 스튜디오입니다. 금성침대·세양침대·한샘·말타니 등 국내 주요 가구 브랜드와 협업합니다.</p>
+          <button type="button" class="btn-ghost nav-trigger" data-page="platform">Curation Platform</button>
+        </div>
+        <ul class="home-timeline">
+          <li><span class="yr">2012</span><span class="ev">LTS CORP. 설립 · LED 가구 조명 사업 시작</span></li>
+          <li><span class="yr">2018</span><span class="ev">Pull-out USB Port 개발 · 가구 빌트인 충전 모듈 본격화</span></li>
+          <li><span class="yr">2022</span><span class="ev">Wall Lighting 18종 라인업 완성 · B2B 납품 확대</span></li>
+          <li><span class="yr">2026</span><span class="ev">seen;new studio · Lighting & Components 큐레이션 플랫폼</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ⑦ Contact / Footer — min-height 100vh, 하단 정렬로 잘림 방지 -->
+    <div class="snap-sec snap-sec--footer">
+      <footer class="home-contact">
+        <div>
+          <p class="lbl">Studio</p>
+          <p>seen;new studio · LTS CORP.<br>서울시 금천구 벚꽃로 244<br>벽산디지털밸리5차 1505호</p>
+        </div>
+        <div>
+          <p class="lbl">Contact</p>
+          <p>T 070-4306-3500 · 010-7763-3500<br>F 0504-268-4392<br>Weekly 09:00 – 18:00</p>
+        </div>
+        <div>
+          <p class="lbl">Focus</p>
+          <p>Lighting · Components<br>B2B Curation · OEM<br>Domestic furniture brands</p>
+        </div>
+        <p class="home-credit" style="grid-column:1/-1;">© LTS CORP. · seen;new studio</p>
+      </footer>
+    </div>
+
   </section>
 
   <!-- ══════════════════════════════════════ LIGHTING ══════════════════════════════════════ -->
