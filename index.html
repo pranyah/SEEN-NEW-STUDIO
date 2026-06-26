@@ -195,12 +195,29 @@
     .home-timeline .yr { display: block; font-size: 10px; letter-spacing: 0.2em; color: var(--text-light); margin-bottom: 4px; }
     .home-timeline .ev { font-size: 13px; color: var(--text-body); line-height: 1.85; }
 
-    .home-lookbook { padding-top: 56px; padding-bottom: 56px; }
-    .home-lookbook .frame.ratio-cinema { max-height: 52vh; }
-    .home-lookbook .frame.ratio-cinema img {
-      position: static; width: 100%; height: auto; max-height: 52vh; object-fit: contain;
+    .home-lookbook { padding-top: 56px; padding-bottom: 72px; }
+    .home-lookbook .eyebrow { margin-bottom: 32px; }
+    .home-lookbook-frame {
+      height: auto;
+      overflow: visible;
+      background: var(--ph);
     }
-    .home-lookbook-cap { margin-top: 20px; font-size: 11px; color: var(--text-light); letter-spacing: 0.12em; }
+    .home-lookbook-frame img {
+      position: static;
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      object-position: center;
+    }
+    .home-lookbook-cap {
+      margin-top: 28px;
+      max-width: 480px;
+      font-size: 11px;
+      color: var(--text-light);
+      letter-spacing: 0.12em;
+      line-height: 1.9;
+    }
 
     .home-contact {
       display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8%;
@@ -363,10 +380,27 @@
       .hero-desc { max-width: 100%; font-size: 16px; }
       .hero-visual .frame img { max-height: 50vh; }
       .hero-grid { min-height: auto; }
-      .home-section { padding: 48px 0; }
-      .home-section-head { grid-template-columns: 1fr; }
-      .home-section-head .btn-ghost { grid-column: 1; grid-row: auto; margin-top: 8px; }
-      .home-gallery { grid-template-columns: repeat(2, 1fr); }
+      .home-section { padding: 56px 0; }
+      .home-section:first-child { padding-top: 40px; }
+      .home-flow { padding-top: 12px; }
+      .home-lookbook { padding-top: 32px; padding-bottom: 64px; }
+      .home-lookbook .eyebrow { margin-bottom: 24px; }
+      .home-lookbook-cap { margin-top: 32px; max-width: 100%; font-size: 11px; line-height: 2; }
+      .home-section-head { grid-template-columns: 1fr; gap: 16px; margin-bottom: 36px; }
+      .home-section-head .display { font-size: clamp(1.8rem, 6vw, 2.4rem); }
+      .home-section-head .home-section-lede { max-width: 100%; font-size: 15px; line-height: 1.9; }
+      .home-section-head .btn-ghost { grid-column: 1; grid-row: auto; margin-top: 4px; align-self: start; }
+      .home-cat-cell { padding: 32px 24px; min-height: 140px; }
+      .home-cat-cell h3 { font-size: 1.25rem; }
+      .home-cat-cell p { font-size: 14px; line-height: 1.85; margin-bottom: 20px; }
+      .home-split .display { margin-bottom: 24px; }
+      .home-split .lede { max-width: 100%; font-size: 15px; line-height: 1.9; margin-bottom: 32px; }
+      .home-about-grid .lede { max-width: 100%; font-size: 15px; line-height: 1.9; }
+      .home-timeline { padding-left: 20px; margin-top: 8px; }
+      .home-timeline .ev { font-size: 14px; line-height: 1.85; }
+      .home-contact { gap: 40px; padding-top: 48px; }
+      .home-contact p { font-size: 14px; line-height: 1.9; }
+      .home-gallery { grid-template-columns: repeat(2, 1fr); gap: 24px 16px; }
       .home-cat-grid { grid-template-columns: 1fr 1fr; }
       .home-split, .home-about-grid, .home-contact { grid-template-columns: 1fr; gap: 32px; }
       .home-comp-grid { grid-template-columns: 1fr; }
@@ -471,10 +505,10 @@
 
         <section class="home-section home-lookbook">
           <p class="eyebrow">Lookbook</p>
-          <div class="frame ratio-cinema">
-            <img src="image/CURATED%20SPACE%20-%2001.png" alt="Curated Space — spatial lighting editorial">
+          <div class="frame home-lookbook-frame">
+            <img src="image/lookbook%20-%2001.png" alt="Lookbook 01 — seen;new studio, a study in refined illumination">
           </div>
-          <p class="home-lookbook-cap">Curated Space · Wall lighting in residential context</p>
+          <p class="home-lookbook-cap">Lookbook · 01 · A study in refined illumination</p>
         </section>
 
         <section class="home-section">
